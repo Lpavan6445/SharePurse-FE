@@ -46,7 +46,6 @@ const AppContext = ({ children }) => {
       getUserMetaData();
     }
   }, [isLoggedIn()]);
-
   return (
     <AppContextBase.Provider
       value={{
@@ -60,7 +59,7 @@ const AppContext = ({ children }) => {
         getUserMetaData,
       }}
     >
-      {children}
+        {children}
     </AppContextBase.Provider>
   );
 };

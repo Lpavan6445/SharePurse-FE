@@ -63,7 +63,7 @@ const styles = makeStyles((theme) => ({
 }));
 
 const SPLIT_WITH_KEY = "split_with";
-const EditExpenses = ({ defaultValues }) => {
+const EditExpenses = ({ defaultValues, match, afterExpenseAdded }) => {
   const classes = styles();
   const { setUserData, userMetaData, getUserMetaData } =
     useContext(AppContextBase);
@@ -79,12 +79,51 @@ const EditExpenses = ({ defaultValues }) => {
     getValues,
     formState: { errors },
   } = useForm({
+    defaultValues: defaultValues,
     // resolver: yupResolver(AddArticleServices.AddArticleValidations),
   });
   const isButtonDisabledRef = useRef({
     isDisabled: false,
     type: "",
   });
+
+  const addExpense = async (formData = {}) => {
+    try {
+      setIsLoading(true);
+      const groupId = match.params.id;
+      const payload = {
+        expense: defaultValues.id,
+        title: formData.title,
+        description: "",
+        total_amount: formData.total_amount,
+        paid_by: formData.paid_by.id,
+        participants: [],
+        category: formData[CATEGORY_ADD_EXPENSES_DK].id
+      };
+      Object.entries(formData).map(([key, value]) => {
+        if (key.includes(SPLIT_WITH_KEY) && value > 0) {
+          const split_id = key.split("_");
+
+          const expenseParticipantId = defaultValues.participants.find((val) => val.userId === Number(split_id[0]))
+          payload.participants.push({
+            user_id: split_id[0],
+            amount_paid: value,
+            id: expenseParticipantId.id,
+          });
+        }
+      });
+      const res = await axiosInstance.post(
+        ApiUrls.EDIT_GROUP_EXPENSES(groupId),
+        payload
+      );
+      await afterExpenseAdded();
+    } catch (error) {
+      console.error(error.message || "Something Went Wrong");
+      toast.error(formatedError(error, true));
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const getBalancesTxt = () => {
     const totalAmount = watch(TOTAL_AMOUNT_ADD_EXPENSES_DK);
@@ -111,15 +150,7 @@ const EditExpenses = ({ defaultValues }) => {
       </>
     );
   };
-
-  console.log(
-    userMetaData.category_choices,
-    Object.entries(userMetaData.category_choices || {}).map(([key, value]) => ({
-      id: key,
-      title: value,
-    })),
-    "Category"
-  );
+  
   const categoryOptions = Object.entries(
     userMetaData.category_choices || {}
   ).map(([key, value]) => ({ id: key, title: value }));
@@ -223,69 +254,64 @@ const EditExpenses = ({ defaultValues }) => {
           <InlineStylecDiv width="100%" padding="0 0.5rem">
             <Typography>Split with *</Typography>
             <div className={classes.splitMoneyWith}>
-              {Object.values(groupMetaData?.group_members || {})?.map(
-                (user) => {
-                  return (
-                    <>
-                      <InlineStyleFlexbox
-                        key={`uniq_${user.id}`}
-                        justifyContent="space-between"
-                        gap="1rem"
-                        fontSize="1rem"
-                      >
-                        <InlineStylecDiv width="50%">
-                          {user.first_name} {user.last_name}
-                        </InlineStylecDiv>
-                        <InlineStylecDiv width="50%">
-                          <ReactHookFormInput
-                            key={`${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`}
-                            control={control}
-                            errors={errors}
-                            name={`${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`}
-                            placeholder={0}
-                            id="standard-number"
-                            variant="outlined"
-                            fullWidth
-                            autoFocus
-                            rules={{
-                              validate: (value) => {
-                                if (!value) {
-                                  return undefined;
-                                }
-                                // check is value is number
-                                if (isNaN(value)) {
-                                  return "Amount should be number";
-                                }
-
-                                if (value < 0) {
-                                  return "Amount should be greater than 0";
-                                }
-
+              {defaultValues.participants?.map((user) => {
+                return (
+                  <>
+                    <InlineStyleFlexbox
+                      key={`uniq_${user.id}`}
+                      justifyContent="space-between"
+                      gap="1rem"
+                      fontSize="1rem"
+                    >
+                      <InlineStylecDiv width="50%">
+                        {user.first_name} {user.last_name}
+                      </InlineStylecDiv>
+                      <InlineStylecDiv width="50%">
+                        <ReactHookFormInput
+                          key={user.name}
+                          control={control}
+                          errors={errors}
+                          name={user.name}
+                          placeholder={0}
+                          id="standard-number"
+                          variant="outlined"
+                          fullWidth
+                          autoFocus
+                          rules={{
+                            validate: (value) => {
+                              if (!value) {
                                 return undefined;
-                              },
-                            }}
-                            type="number"
-                            disabled={!watch(TOTAL_AMOUNT_ADD_EXPENSES_DK)}
-                          />
-                        </InlineStylecDiv>
-                      </InlineStyleFlexbox>
-                      <hr />
-                    </>
-                  );
-                }
-              )}
+                              }
+                              // check is value is number
+                              if (isNaN(value)) {
+                                return "Amount should be number";
+                              }
+
+                              if (value < 0) {
+                                return "Amount should be greater than 0";
+                              }
+
+                              return undefined;
+                            },
+                          }}
+                          type="number"
+                          disabled={!watch(TOTAL_AMOUNT_ADD_EXPENSES_DK)}
+                        />
+                      </InlineStylecDiv>
+                    </InlineStyleFlexbox>
+                    <hr />
+                  </>
+                );
+              })}
               <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
             </div>
           </InlineStylecDiv>
           <Grid item xs={12}>
             <ButtonComponent
               type="submit"
-              // className={classes.submit}
-              // isLoading={isLoading}
-              // onClick={handleSubmit}
-              // onClick={handleSubmit(addExpense)}
               fullWidth
               disabled={isButtonDisabledRef.current.isDisabled}
+              onClick={handleSubmit(addExpense)}
             >
               Add Expense
             </ButtonComponent>

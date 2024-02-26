@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { initHttp } from './Base/api/axios';
 import LoaderComponent from './components/globalComponents/LoaderComponent';
+import Box from '@mui/material/Box';
 
 function App() {
   useEffect(() => {
@@ -14,9 +15,11 @@ function App() {
 
   return ( 
     <Suspense fallback={<LoaderComponent />}>
-      <AppContextBase.Wrapper>
-        <RootRouter />
-        <ToastContainer pauseOnHover/>
+     <AppContextBase.Wrapper>
+        <Box>
+          <RootRouter />
+          <ToastContainer pauseOnHover/>
+        </Box>
       </AppContextBase.Wrapper>
     </Suspense>
   );

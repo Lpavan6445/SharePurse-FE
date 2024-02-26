@@ -29,6 +29,9 @@ import AppUrls from "../../../Base/route/appUrls";
 import AppContextBase from "../../../Base/appContext";
 
 const styles = makeStyles((theme) => ({
+  container: {
+    padding: '1rem'
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
@@ -143,7 +146,7 @@ console.log(userMetaData.category_choices, Object.entries(userMetaData.category_
   const categoryOptions = Object.entries(userMetaData.category_choices || {}).map(([key, value]) => ({ id: key, title: value }));
   return (
     <>
-      <Container component="main" maxWidth="sm">
+      <Container component="main" maxWidth="sm" className={classes.container}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography>
