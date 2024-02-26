@@ -40,6 +40,7 @@ const ReactHookFormInput = ({
 					size="medium"
 					className={classes.inputStyles}
 					{...otherProps}
+					color="text.primary"
 				/>
 			)}
 		/>

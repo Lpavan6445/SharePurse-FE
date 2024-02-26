@@ -33,6 +33,7 @@ import { AUTH_COOKIE_KEY } from "../../Base/cookie/cookieConstants.js";
 import cookies from "../../Base/cookie/cookie.js";
 import AppContextBase from "../../Base/appContext.js";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Stack } from "@mui/material";
 
 function SignUpPage({ history }) {
   const classes = signUpStyles();
@@ -79,6 +80,7 @@ function SignUpPage({ history }) {
           Sign up
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit(signUp)}>
+        <Stack>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <ReactHookFormInput
@@ -163,6 +165,7 @@ function SignUpPage({ history }) {
               </Grid>
             </Grid>
           </Grid>
+        </Stack>
         </form>
       </div>
     </Container>

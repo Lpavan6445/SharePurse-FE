@@ -6,38 +6,29 @@ import AppContextBase from "./Base/appContext";
 import SideNavBar from "./components/SideNavBar/sideNavbar";
 import AppUrls from "./Base/route/appUrls";
 import GroupExpenses from "./components/groupExpenses";
-import { Breadcrumbs, Link, Typography } from "@material-ui/core";
+import { Breadcrumbs, Container, Link, Typography } from "@material-ui/core";
 import GroupsList from "./components/groupExpenses/components/groupsList";
+import AppAppBar from "./AppAppBar.js";
+import Wrapper from "./hero.js";
 const Homepage = React.lazy(() => import("./components/homepage/index.js"));
 
-const LoggedInLayout = () => {
-  const { setUserData, userData, logOutUser } = useContext(AppContextBase);
+const LoggedInLayout = ({ history, match }) => {
+  const { setUserData, userData, logOutUser, mode } = useContext(AppContextBase);
   function handleClick(event) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
   }
   return (
     <>
-      <PrimarySearchAppBar />
-      <br />
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link href={AppUrls.HOME_PAGE}>Home</Link>
-        <Link href={AppUrls.GROUPS_LIST}>Groups</Link>
-        <Link href={AppUrls.VIEW_GROUP(":id")}>View Group</Link>
-        <Link href={AppUrls.VIEW_EXPENSE(":id", ":expenseId")}>
-          ADD_EXPENSES
-        </Link>
-        <Link href={AppUrls.EDIT_EXPENSE(":id", ":expenseId")}>
-          Edit_EXPENSES
-        </Link>
-      </Breadcrumbs>
-      <br />
-      <Switch>
-        <Route path={AppUrls.HOME_PAGE} component={Homepage} />
-        <Route path={AppUrls.GROUPS_LIST} component={GroupsList} />
-        <Route path={AppUrls.VIEW_GROUP(":id")} component={GroupExpenses} />
-        <Route path="*" component={Homepage} />
-      </Switch>
+      <AppAppBar history={history} />
+      <Wrapper>
+        <Switch>
+          <Route path={AppUrls.HOME_PAGE} component={Homepage} />
+          <Route path={AppUrls.GROUPS_LIST} component={GroupsList} />
+          <Route path={AppUrls.VIEW_GROUP(":id")} component={GroupExpenses} />
+          <Route path="*" component={Homepage} />
+        </Switch>
+      </Wrapper>
     </>
   );
 };

@@ -16,6 +16,7 @@ const TRANSACTION_BASE = `${AUTH_BASE}/transaction`;
 const GROUP_EXPENSES = groupId => `${TRANSACTION_BASE}/get-list-of-expenses-of-group/${groupId}/`;
 const GET_GROUP_BALANCES= (groupId) => `${TRANSACTION_BASE}/get-individual-balances/${groupId}/`;
 const ADD_GROUP_EXPENSES = groupId => `${TRANSACTION_BASE}/make/${groupId}/`;
+const EDIT_GROUP_EXPENSES = groupId => `${TRANSACTION_BASE}/edit/${groupId}/`;
 
 const ApiUrls = {
     AUTH_BASE,
@@ -30,6 +31,7 @@ const ApiUrls = {
     GET_GROUP_BALANCES,
     ADD_MEMEBERS_TO_GROUP,
     CREATE_GROUP,
+    EDIT_GROUP_EXPENSES,
 };
 
 export default ApiUrls;
