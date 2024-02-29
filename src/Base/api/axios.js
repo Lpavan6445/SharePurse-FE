@@ -34,7 +34,6 @@ export function initHttp() {
     //   config.headers[XCSR_TOKEN] = cookies.get('csrftoken'); // eslint-disable-line
     // }
     // config.headers['Content-Type'] = 'application/json';
-    console.log('alert')
     return config;
   }, function (error) { // eslint-disable-line
     // Do something with request error3

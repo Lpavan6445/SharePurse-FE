@@ -128,7 +128,6 @@ const EditExpenses = ({ defaultValues, match, afterExpenseAdded }) => {
   const getBalancesTxt = () => {
     const totalAmount = watch(TOTAL_AMOUNT_ADD_EXPENSES_DK);
     const fields = getValues() || {};
-    console.log(getValues(), Object.entries(fields));
 
     let allocatedAmount = 0;
     Object.entries(fields).map(([key, value]) => {

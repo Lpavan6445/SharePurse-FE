@@ -118,7 +118,6 @@ const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
     });
     // const ex = `${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`;
     setDefaultEditValues(defaultValues);
-    console.log(data);
   };
 
   useEffect(() => {

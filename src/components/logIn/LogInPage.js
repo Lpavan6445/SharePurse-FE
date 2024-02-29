@@ -57,7 +57,6 @@ function LogInPage({ history }) {
       const response = await axiosInstance.post(ApiUrls.LOG_IN, payload);
      
       const { token, userData } = response.data;
-      debugger;
       cookies.set(AUTH_COOKIE_KEY, token);
       setUserData(userData);
       await getUserMetaData();

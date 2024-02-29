@@ -120,7 +120,6 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
   const getBalancesTxt = () => {
     const totalAmount = watch(TOTAL_AMOUNT_ADD_EXPENSES_DK);
     const fields = getValues() || {};
-    console.log(getValues(), Object.entries(fields));
 
     let allocatedAmount = 0;
     Object.entries(fields).map(([key, value]) => {
@@ -142,7 +141,6 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
       </>
     );
   };
-console.log(userMetaData.category_choices, Object.entries(userMetaData.category_choices || {}).map(([key, value]) => ({ id: key, title: value })), 'Category')
   const categoryOptions = Object.entries(userMetaData.category_choices || {}).map(([key, value]) => ({ id: key, title: value }));
   return (
     <>

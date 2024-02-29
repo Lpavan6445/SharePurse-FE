@@ -3,8 +3,8 @@ import ApiUrls from "../../../Base/api/apiUrls";
 import ConditionalRender from "../../globalComponents/conditionalRender";
 import LoaderComponent from "../../globalComponents/LoaderComponent";
 import axiosInstance from "../../../Base/api/axios";
-import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
-import { InlineStyleFlexbox } from "../../globalComponents/InlineStyledCommonComponents";
+import { Box, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
+import { InlineStyleFlexbox, InlineStylecDiv } from "../../globalComponents/InlineStyledCommonComponents";
 import ButtonComponent from "../../globalComponents";
 import AppUrls from "../../../Base/route/appUrls";
 import CenteredModal from "../../globalComponents/Modal";
@@ -13,8 +13,11 @@ import GroupContextBase from "../groupContext";
 import AppContextBase from "../../../Base/appContext";
 import AddExpenses from "./addExpenses";
 import ViewEditExpenses from "./viewEditExpense";
+import { CustomCardComponent, PageHeader } from "../../globalComponents/commonComponents";
+import { viewGroupStyles } from '../styles';
 
 const ViewGroup = ({ history, match }) => {
+  const classes = viewGroupStyles();
   const { userMetaData } = useContext(AppContextBase);
   const { groupMetaData } = useContext(GroupContextBase);
   const [groupExpenses, setGroupExpenses] = useState([]);
@@ -67,25 +70,64 @@ const ViewGroup = ({ history, match }) => {
     setViewExpenseModal(expense);
   };
 
-  console.log(
-    groupMetaData?.group_members,
-    Object.keys(groupMetaData?.group_members || {}),
-    "groupMetaData?.group_members"
-  );
   return (
     <ConditionalRender
       shouldRender={!isLoading}
       elseShowThis={<LoaderComponent position="center" />}
     >
-      <Typography>
-        You owe {" "}
-        {groupBalanceData.total_owed} 
-      </Typography>
-      <Typography>
-        You borrowed{" "}
+      <PageHeader>
+        {groupMetaData?.group_details?.group_name || ''}
+      </PageHeader>
+      <Box className={classes.cardsWrapper}>
+        <CustomCardComponent
+            flexDirection="column"
+            justifyContent="space-between"
+            alignItems="center"
+            width="50%"
+            padding="1rem"
+            height="150px"
+            className={classes.cardStyles}
+            // onClick={() => history.push(AppUrls.VIEW_GROUP(groupDt.id))}
+        >
+          <InlineStylecDiv
+            fontSize="1.5rem" 
+            fontWeight="700"
+            width="100%"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textAlign="center"
+          >
+            You owe {" "}
+            {groupBalanceData.total_owed} 
+          </InlineStylecDiv>
+        </CustomCardComponent>
+        <CustomCardComponent
+            flexDirection="column"
+            justifyContent="space-between"
+            alignItems="center"
+            width="50%"
+            padding="1rem"
+            height="150px"
+            className={classes.cardStyles}
+            // onClick={() => history.push(AppUrls.VIEW_GROUP(groupDt.id))}
+        >
+          <InlineStylecDiv
+            fontSize="1.5rem" 
+            fontWeight="700"
+            width="100%"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textAlign="center"
+          >
+             You borrowed{" "}
         {groupBalanceData.total_borrowed} 
-      </Typography>
-      <InlineStyleFlexbox justifyContent="flex-start" gap="1rem">
+          </InlineStylecDiv>
+        </CustomCardComponent>
+      </Box>
+
+      <InlineStyleFlexbox justifyContent="flex-end" gap="1rem" margin="1rem 0">
         <ButtonComponent
           type="submit"
           onClick={() => setAddExpensesModal(true)}
@@ -97,8 +139,8 @@ const ViewGroup = ({ history, match }) => {
         </ButtonComponent>
       </InlineStyleFlexbox>
       <div sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      {/* <TableContainer component={Paper}>
+        <Table size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
@@ -112,20 +154,20 @@ const ViewGroup = ({ history, match }) => {
             {
               groupExpenses.map((expense) => {
                 return (
-                  <TableRow>
-                    <TableCell key={`${expense.title}${expense.id}`} align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                  <TableRow key={`${expense.title}${expense.id}`}>
+                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
                       {expense.created_at}
                     </TableCell>
-                    <TableCell key={`${expense.title}${expense.id}`} align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
                       {expense.title}
                     </TableCell>
-                    <TableCell key={`${expense.title}${expense.id}`} align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
                       {expense.paid_by}
                     </TableCell>
-                    <TableCell key={`${expense.title}${expense.id}`} align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell className={classes.greeTextStyle}  align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
                       {expense.total_amount_paid}
                     </TableCell>
-                    <TableCell key={`${expense.title}${expense.id}`} align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
                       {expense.title}
                     </TableCell>
                   </TableRow>
@@ -134,7 +176,7 @@ const ViewGroup = ({ history, match }) => {
             }
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
       </div>
       <CenteredModal
         isOpen={openAddMembersModal}

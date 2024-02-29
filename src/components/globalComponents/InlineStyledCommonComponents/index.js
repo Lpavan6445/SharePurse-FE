@@ -2,6 +2,7 @@ import React from 'react';
 
 export const InlineStyleFlexbox = ({
 	children,
+	onClick = () => {},
 	extraClassNames = '',
 	...restStyles
 }) => {
@@ -14,13 +15,14 @@ export const InlineStyleFlexbox = ({
 				...restStyles,
 			}}
 			className={extraClassNames}
+			onClick={onClick}
 		>
 			{children}
 		</div>
 	);
 };
 
-export const InlineStylecDiv = ({ children, onClick, ...restStyles }) => {
+export const InlineStylecDiv = ({ children, onClick = () => {}, ...restStyles }) => {
 	return (
 		<div style={{ ...restStyles }} onClick={onClick}>
 			{children}

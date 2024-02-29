@@ -3,6 +3,8 @@ import cookies from "./cookie/cookie";
 import { AUTH_COOKIE_KEY } from "./cookie/cookieConstants";
 import ApiUrls from "./api/apiUrls";
 import axiosInstance from "./api/axios";
+import getThemes from './themes/index';
+import { ThemeProvider } from "@material-ui/core";
 
 const AppContextBase = createContext({});
 const AppContext = ({ children }) => {
@@ -59,7 +61,9 @@ const AppContext = ({ children }) => {
         getUserMetaData,
       }}
     >
+      <ThemeProvider theme={getThemes()}>
         {children}
+      </ThemeProvider>
     </AppContextBase.Provider>
   );
 };

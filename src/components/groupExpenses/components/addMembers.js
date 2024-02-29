@@ -67,7 +67,6 @@ const AddMembers = ({
     }
     return false
   });
-  console.log(users, groupMembers, filterUsersByGroupMemebers, 'filterUsersByGroupMemebers')
   return (
     <InlineStylecDiv padding="1rem">
       <Grid container spacing={2}>

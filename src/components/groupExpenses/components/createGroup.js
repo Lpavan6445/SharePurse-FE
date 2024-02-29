@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { InlineStylecDiv } from '../../globalComponents/InlineStyledCommonComponents';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, makeStyles } from '@material-ui/core';
 import ReactHookSearchWithSelect from '../../globalComponents/reactHookFormWrappedComponents/formSearchWithSelect';
 import ButtonComponent from '../../globalComponents';
 import { useForm } from 'react-hook-form';
@@ -23,7 +23,15 @@ const CREATE_GROUP = {
       },
   }
 };
+const styles = makeStyles((theme) => ({
+	inputStyles: {
+		'& .MuiOutlinedInput-input': {
+			padding: '0.7rem'
+		}
+	}
+}))
 const CreateGroup = ({ history }) => {
+  const classes = styles();
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
@@ -73,6 +81,7 @@ const CreateGroup = ({ history }) => {
             rules={CREATE_GROUP.validations}
             control={control}
             errors={errors}
+            className={classes.inputStyles}
           />
         </Grid>
         <Grid item xs={12}>

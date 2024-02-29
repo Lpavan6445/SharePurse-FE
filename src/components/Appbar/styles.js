@@ -9,6 +9,7 @@ export const appBarStyles = makeStyles((theme) => ({
     },
     title: {
       display: 'none',
+      paddingLeft: '1rem',
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
