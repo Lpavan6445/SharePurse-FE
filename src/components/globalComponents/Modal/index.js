@@ -16,7 +16,7 @@ const styles = makeStyles(theme => ({
 	},
 	title: {
 		fontSize: '1.1rem',
-		fontWeight: '500',
+		fontWeight: '600',
 		textAlign: 'center',
 		borderBottom: '1px solid #8080808c',
 		padding: '0.7rem 1rem',

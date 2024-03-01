@@ -14,6 +14,7 @@ const defaultTheme = createTheme({
 		redcolor: "rgb(245,57,57)",
 		warningcolor: "rgb(249,115,22)",
 		globalcolor: BUTTON_BG_COLOR,
+		appBackgroundColor: "rgb(238,241,252)",
 	},
 	appBoxShadows: {
 		cardShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(112, 144, 176, 0.08) 14px 17px 40px 4px',
@@ -31,7 +32,7 @@ const defaultTheme = createTheme({
 				borderRadius: "0.75rem",
 				padding: "0.5rem 1rem",
 				fontWeight: "600",
-				
+				textTransform: "auto",
 				'&:hover': {
 					backgroundColor: "#3f28f7e6"
 				}
@@ -51,25 +52,25 @@ const defaultTheme = createTheme({
 		MuiInputBase: {
 			root: {
 				padding: '0.2rem 0.5rem',
-				borderRadius: '9999px',
+				borderRadius: '9px',
 				backgroundColor: '#FFFFFF',
 				boxShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(112, 144, 176, 0.08) 14px 17px 40px 4px',
 
 			},
 			input: {
-				borderRadius: '9999px',
+				borderRadius: '7px',
 				backgroundColor: 'rgb(238,241,252)'
 			}
 		},
 		MuiOutlinedInput: {
 			root: {
 				padding: '0.5rem 0.5rem',
-				borderRadius: '9999px',
+				borderRadius: '9px',
 				backgroundColor: '#FFFFFF',
 			},
 			input: {
 				padding: '0.5rem 1rem',
-				borderRadius: '9999px',
+				borderRadius: '7px',
 				backgroundColor: 'rgb(238,241,252)'
 			}
 		},

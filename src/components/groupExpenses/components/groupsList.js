@@ -11,6 +11,18 @@ import AddIcon from '@material-ui/icons/Add';
 import { PageHeader } from '../../globalComponents/commonComponents';
 
 const styles = makeStyles((theme) => ({
+  groupsListWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.up('lg')]: {
+      justifyContent: "flex-start",
+    },
+    justifyContent: "center",
+    alignItems: "center",
+    gap:"2rem",
+    flexWrap:"wrap",
+    overflowX: 'hidden',
+  },
   listRow: {
     display: 'flex',
     alignItems: 'center',
@@ -27,17 +39,6 @@ const styles = makeStyles((theme) => ({
     boxShadow: theme.appBoxShadows.cardShadow,
     cursor: 'pointer',
   },
-  groupsListWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.up('lg')]: {
-      justifyContent: "flex-start",
-    },
-    justifyContent: "center",
-    alignItems: "center",
-    gap:"2rem",
-    flexWrap:"wrap"
-  }
 }))
 const GroupsList = ({ history, match }) => {
   const classes = styles();

@@ -30,7 +30,8 @@ import AppContextBase from "../../../Base/appContext";
 
 const styles = makeStyles((theme) => ({
   container: {
-    padding: '1rem'
+    padding: '1rem',
+    backgroundColor: theme.moduleColurs.appBackgroundColor
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -39,11 +40,11 @@ const styles = makeStyles((theme) => ({
   splitMoneyWith: {
     height: "200px",
     overflow: "scroll",
-    width: "100%",
+    // width: "100%",
     marginBottom: "1rem",
     border: "1px solid gray",
     padding: "1rem 1rem 0 1rem",
-
+    background: 'white',
     display: "flex",
     gap: "1rem",
     flexDirection: "column",

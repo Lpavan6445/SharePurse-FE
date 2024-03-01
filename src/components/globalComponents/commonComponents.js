@@ -1,4 +1,4 @@
-import { Box, withStyles } from "@material-ui/core";
+import { Box, Tooltip, withStyles } from "@material-ui/core";
 
 export const PageHeader = withStyles((theme) => ({
    root: {
@@ -31,3 +31,13 @@ export const CustomCardComponent = withStyles((theme) => ({
       padding: "18px",
    } 
 }))(Box);
+
+export const LightTooltip = withStyles((theme) => ({
+   tooltip: {
+     backgroundColor: 'white',
+     color: 'rgba(0, 0, 0, 0.87)',
+     boxShadow: `${theme.moduleColurs.globalcolor} 0px 1px 3px 0px`,
+     fontSize: 11,
+   //   border: `1px solid ${theme.moduleColurs.globalcolor}`
+   },
+ }))(Tooltip);

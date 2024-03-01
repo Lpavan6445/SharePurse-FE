@@ -20,7 +20,6 @@ import moneyIcon from '../assets/moneyIcon.png';
 import dashboardIcon from '../assets/dashboardIcon.svg';
 import groupsIcon from '../assets/groupsIcon.svg';
 import sharePurseIcon1 from '../assets/sharePurseIcon1.jpeg';
-import { unset } from 'lodash';
 
 const drawerWidth = 280;
 const useStyles = makeStyles((theme) => ({
@@ -149,7 +148,7 @@ const FixedSidebar = ({ history, children }) => {
     <div>
       <Box className={classes.sidebarLogoWrapper}>
         <div className={classes.sidebarLogo}>
-            <img width="94" height="94" src={sharePurseIcon1} alt="coins"/>
+            <img width="40" height="40" src={sharePurseIcon1} alt="coins"/>
         </div>
         <Typography className={classes.brandName}>
           Share Purse

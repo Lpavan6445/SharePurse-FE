@@ -29,3 +29,19 @@ export const InlineStylecDiv = ({ children, onClick = () => {}, ...restStyles })
 		</div>
 	);
 };
+
+export const ImgInlineStyle = ({ 
+	altIcon="icon", 
+	src="", 
+	onClick = () => {},
+	...extraStyles
+}) => {
+	return (
+		<img 
+			alt={altIcon} 
+			src={src} 
+			style={{ width: 40, height:40, ...extraStyles }} 
+			onClick={onClick}
+		/>
+	);
+};

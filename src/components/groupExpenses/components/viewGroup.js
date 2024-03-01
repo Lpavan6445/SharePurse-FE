@@ -1,10 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import ApiUrls from "../../../Base/api/apiUrls";
 import ConditionalRender from "../../globalComponents/conditionalRender";
 import LoaderComponent from "../../globalComponents/LoaderComponent";
 import axiosInstance from "../../../Base/api/axios";
-import { Box, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
-import { InlineStyleFlexbox, InlineStylecDiv } from "../../globalComponents/InlineStyledCommonComponents";
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
+import {
+  ImgInlineStyle,
+  InlineStyleFlexbox,
+  InlineStylecDiv,
+} from "../../globalComponents/InlineStyledCommonComponents";
 import ButtonComponent from "../../globalComponents";
 import AppUrls from "../../../Base/route/appUrls";
 import CenteredModal from "../../globalComponents/Modal";
@@ -13,8 +31,21 @@ import GroupContextBase from "../groupContext";
 import AppContextBase from "../../../Base/appContext";
 import AddExpenses from "./addExpenses";
 import ViewEditExpenses from "./viewEditExpense";
-import { CustomCardComponent, PageHeader } from "../../globalComponents/commonComponents";
-import { viewGroupStyles } from '../styles';
+import SettleBalance from "./settleBalance";
+import {
+  CustomCardComponent,
+  PageHeader,
+  LightTooltip,
+} from "../../globalComponents/commonComponents";
+import { viewGroupStyles } from "../styles";
+import postiveArrow from "../../../assets/possitiveArrow.svg";
+import negetiveArrow from "../../../assets/negetiveArrow.svg";
+import movieIconColor from "../../../assets/movieIconColor.svg";
+import travelIcon from "../../../assets/travelIcon.svg";
+import shoppingIcon from "../../../assets/shoppingIcon.svg";
+import arrowBlackColor from "../../../assets/arrowBlackColor.svg";
+import linesIcons from "../../../assets/linesIcons.svg";
+import moment from "moment";
 
 const ViewGroup = ({ history, match }) => {
   const classes = viewGroupStyles();
@@ -29,7 +60,11 @@ const ViewGroup = ({ history, match }) => {
     modal: false,
     data: {},
   });
-
+  const [openSettleBalanceModal, setOpenSettleBalanceModal] = useState({
+    modal: false,
+    data: {},
+  });
+  const theme = useTheme();
   const getGroupExpensesData = async () => {
     try {
       const groupId = match.params.id;
@@ -63,12 +98,56 @@ const ViewGroup = ({ history, match }) => {
   const afterExpenseAdded = async () => {
     await intitalApi();
     setAddExpensesModal(false);
-    setViewExpenseModal({ modal: false, data: {} })
+    setViewExpenseModal({ modal: false, data: {} });
   };
 
   const viewExpense = (expense) => {
     setViewExpenseModal(expense);
   };
+
+  const getBackDetails = useCallback(() => {
+    return (
+      <InlineStyleFlexbox
+        alignItems="flex-end"
+        gap="0.5rem"
+        flexDirection="column"
+      >
+        {Object.entries(groupBalanceData.dict || {}).map(([key, balance]) => {
+          if (balance < 0) return "";
+          return (
+            <InlineStylecDiv fontWeight="700" fontSize="1rem">
+              {userMetaData.users?.[key]?.first_name || key} owes you{" "}
+              <span style={{ color: theme.moduleColurs.greencolor }}>
+                {balance}
+              </span>
+            </InlineStylecDiv>
+          );
+        })}
+      </InlineStyleFlexbox>
+    );
+  }, [groupBalanceData.dict]);
+
+  const getOweDetails = useCallback(() => {
+    return (
+      <InlineStyleFlexbox 
+        alignItems="flex-end"
+        gap="0.5rem"
+        flexDirection="column"
+      >
+        {Object.entries(groupBalanceData.dict || {}).map(([key, balance]) => {
+          if (balance > 0) return "";
+          return (
+            <InlineStylecDiv fontWeight="700" fontSize="1rem">
+              You owe {userMetaData.users?.[key]?.first_name || key}{" "}
+              <span style={{ color: theme.moduleColurs.redcolor }}>
+                {balance}
+              </span>
+            </InlineStylecDiv>
+          );
+        })}
+      </InlineStyleFlexbox>
+    );
+  }, [groupBalanceData.dict]);
 
   return (
     <ConditionalRender
@@ -76,58 +155,118 @@ const ViewGroup = ({ history, match }) => {
       elseShowThis={<LoaderComponent position="center" />}
     >
       <PageHeader>
-        {groupMetaData?.group_details?.group_name || ''}
+        <InlineStyleFlexbox justifyContent="flex-start">
+          <ImgInlineStyle
+            src={arrowBlackColor}
+            width={40}
+            height={40}
+            cursor="pointer"
+            onClick={() => history.push(AppUrls.GROUPS_LIST)}
+          />
+          {groupMetaData?.group_details?.group_name || ""}
+        </InlineStyleFlexbox>
       </PageHeader>
       <Box className={classes.cardsWrapper}>
         <CustomCardComponent
-            flexDirection="column"
-            justifyContent="space-between"
-            alignItems="center"
-            width="50%"
-            padding="1rem"
-            height="150px"
-            className={classes.cardStyles}
-            // onClick={() => history.push(AppUrls.VIEW_GROUP(groupDt.id))}
+          className={classes.cardStyles}
+          data-aos="flip-left"
         >
-          <InlineStylecDiv
-            fontSize="1.5rem" 
-            fontWeight="700"
-            width="100%"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textAlign="center"
-          >
-            You owe {" "}
-            {groupBalanceData.total_owed} 
-          </InlineStylecDiv>
+          <Box className={classes.cardTextWrapper}>
+            <InlineStylecDiv fontWeight="bold" fontSize="2.5rem">
+              ₹{groupBalanceData.total_owed}
+            </InlineStylecDiv>
+            <InlineStylecDiv fontSize="1.2rem" color="gray">
+              Total Spends
+            </InlineStylecDiv>
+          </Box>
         </CustomCardComponent>
         <CustomCardComponent
-            flexDirection="column"
-            justifyContent="space-between"
-            alignItems="center"
-            width="50%"
-            padding="1rem"
-            height="150px"
-            className={classes.cardStyles}
-            // onClick={() => history.push(AppUrls.VIEW_GROUP(groupDt.id))}
+          className={classes.cardStyles}
+          data-aos="flip-left"
         >
-          <InlineStylecDiv
-            fontSize="1.5rem" 
-            fontWeight="700"
-            width="100%"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textAlign="center"
-          >
-             You borrowed{" "}
-        {groupBalanceData.total_borrowed} 
-          </InlineStylecDiv>
+          <Box className={classes.cardTextWrapper}>
+            <InlineStylecDiv
+              fontWeight="bold"
+              fontSize="2.5rem"
+              color={theme.moduleColurs.greencolor}
+            >
+              ₹{groupBalanceData.total_owed}
+            </InlineStylecDiv>
+            <InlineStylecDiv fontSize="1.2rem" color="gray">
+              You get back
+            </InlineStylecDiv>
+            <LightTooltip title={getBackDetails()}>
+              <span>
+                <ImgInlineStyle
+                  src={linesIcons}
+                  width={20}
+                  height={20}
+                  position="absolute"
+                  bottom="11px"
+                  right="11px"
+                  cursor="pointer"
+                />
+              </span>
+            </LightTooltip>
+          </Box>
+        </CustomCardComponent>
+        <CustomCardComponent
+          className={classes.cardStyles}
+          data-aos="flip-right"
+        >
+          <Box className={classes.cardTextWrapper}>
+            <InlineStylecDiv
+              fontWeight="bold"
+              fontSize="2.5rem"
+              color={theme.moduleColurs.redcolor}
+            >
+              ₹{-groupBalanceData.total_borrowed}
+            </InlineStylecDiv>
+            <InlineStylecDiv fontSize="1.2rem" color="gray">
+              You Owe
+            </InlineStylecDiv>
+            <LightTooltip title={getOweDetails()}>
+              <span>
+                <ImgInlineStyle
+                  src={linesIcons}
+                  width={20}
+                  height={20}
+                  position="absolute"
+                  bottom="11px"
+                  right="11px"
+                  cursor="pointer"
+                />
+              </span>
+            </LightTooltip>
+          </Box>
+        </CustomCardComponent>
+        <CustomCardComponent
+          className={classes.cardStyles}
+          data-aos="flip-right"
+        >
+          <Box className={classes.cardTextWrapper}>
+            <InlineStylecDiv fontWeight="bold" fontSize="2.5rem">
+              {groupBalanceData.total_borrowed}
+            </InlineStylecDiv>
+            <InlineStylecDiv fontSize="1.2rem" color="gray">
+              Settled
+            </InlineStylecDiv>
+          </Box>
         </CustomCardComponent>
       </Box>
 
-      <InlineStyleFlexbox justifyContent="flex-end" gap="1rem" margin="1rem 0">
+      <Box className={classes.addButtonsWrapper}>
+        <ButtonComponent
+          type="submit"
+          onClick={() =>
+            setOpenSettleBalanceModal({
+              modal: true,
+              data: groupBalanceData.dict,
+            })
+          }
+        >
+          Settle Up
+        </ButtonComponent>
         <ButtonComponent
           type="submit"
           onClick={() => setAddExpensesModal(true)}
@@ -137,46 +276,72 @@ const ViewGroup = ({ history, match }) => {
         <ButtonComponent type="submit" onClick={() => setAddMembersModal(true)}>
           Add Members
         </ButtonComponent>
-      </InlineStyleFlexbox>
-      <div sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      {/* <TableContainer component={Paper}>
-        <Table size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell align="right">Title</TableCell>
-              <TableCell align="right">Paid by</TableCell>
-              <TableCell align="right">Amount</TableCell>
-              <TableCell align="right">Your Contribution</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              groupExpenses.map((expense) => {
+      </Box>
+      <div
+        styles={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+      >
+        <TableContainer component={Paper}>
+          <Table aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell align="left">Title</TableCell>
+                <TableCell align="left">Paid by</TableCell>
+                <TableCell align="left">Amount</TableCell>
+                <TableCell align="left">Your Contribution</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody style={{ marginTop: "1rem" }}>
+              {groupExpenses.map((expense) => {
                 return (
                   <TableRow key={`${expense.title}${expense.id}`}>
-                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
-                      {expense.created_at}
+                    <TableCell
+                      align="left"
+                      onClick={() =>
+                        viewExpense({ modal: true, data: expense })
+                      }
+                    >
+                      {moment(expense.created_at).format("MMM Do YY")}
                     </TableCell>
-                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell
+                      align="left"
+                      onClick={() =>
+                        viewExpense({ modal: true, data: expense })
+                      }
+                    >
                       {expense.title}
                     </TableCell>
-                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell
+                      align="left"
+                      onClick={() =>
+                        viewExpense({ modal: true, data: expense })
+                      }
+                    >
                       {expense.paid_by}
                     </TableCell>
-                    <TableCell className={classes.greeTextStyle}  align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell
+                      className={classes.greeTextStyle}
+                      align="left"
+                      onClick={() =>
+                        viewExpense({ modal: true, data: expense })
+                      }
+                    >
                       {expense.total_amount_paid}
                     </TableCell>
-                    <TableCell align="right" onClick={() => viewExpense({ modal: true, data: expense })}>
+                    <TableCell
+                      align="left"
+                      onClick={() =>
+                        viewExpense({ modal: true, data: expense })
+                      }
+                    >
                       {expense.title}
                     </TableCell>
                   </TableRow>
                 );
-              })
-            }
-          </TableBody>
-        </Table>
-      </TableContainer> */}
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
       <CenteredModal
         isOpen={openAddMembersModal}
@@ -197,8 +362,8 @@ const ViewGroup = ({ history, match }) => {
         isOpen={openAddExpensesModal}
         title="Add Expenses"
         onClose={() => setAddExpensesModal(false)}
-        width="30%"
-        minWidth="320px"
+        width="fit-content"
+        maxWidth="90%"
         height="fit-content"
         minHeight="fit-content"
       >
@@ -222,6 +387,22 @@ const ViewGroup = ({ history, match }) => {
           match={match}
           data={viewExpenseModal.data}
           afterExpenseAdded={afterExpenseAdded}
+        />
+      </CenteredModal>
+      <CenteredModal
+        isOpen={openSettleBalanceModal.modal}
+        title="Settle Balance"
+        onClose={() => setOpenSettleBalanceModal({ modal: false, data: {} })}
+        width="30%"
+        minWidth="320px"
+        height="fit-content"
+        minHeight="fit-content"
+      >
+        <SettleBalance
+          afterSettleUp={() => {}}
+          history={history}
+          match={match}
+          data={openSettleBalanceModal.data}
         />
       </CenteredModal>
     </ConditionalRender>
