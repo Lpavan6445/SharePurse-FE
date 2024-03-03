@@ -8,10 +8,10 @@ const GroupContext = ({ children, match }) => {
   const [groupMetaData, setGroupMetadata] = useState({});
   const [isLoading, setLoading] = useState(true);
 
-  const getGroupExpensesMetaData = async () => {
+  const getGroupExpensesMetaData = async (activateLoader = true) => {
     try {
       const groupId = match.params.id;
-      setLoading(true);
+      activateLoader && setLoading(true);
       const res = await axiosInstance.get(ApiUrls.GET_GROUP_METADATA(groupId));
       const formatedUsersData = res.data.group_members.reduce((acc, curr) => {
         acc[curr.id] = curr;
@@ -26,7 +26,7 @@ const GroupContext = ({ children, match }) => {
     } catch (error) {
       console.error(error.message || "Something Went Wrong");
     } finally {
-      setLoading(false);
+      activateLoader && setTimeout(() => setLoading(false), 500)
     }
   };
 
@@ -36,7 +36,8 @@ const GroupContext = ({ children, match }) => {
 
   if (isLoading) {
     return <LoaderComponent position="center" />;
-  }
+  };
+
   return (
     <GroupContextBase.Provider
       value={{

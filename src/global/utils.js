@@ -18,3 +18,41 @@ export const formatedError = (
 
 	return defaultErrorMsg;
 };
+
+export function numFormatterForMoreThan10K(num, decimalPlaces = 2) {
+	if (!num) { return 0; }
+  
+	if (num > 999 && num < 100000) {
+	  return `${(num / 1000).toFixed(decimalPlaces)}K`.replace(/\.00?$/, ''); // convert to K for number from > 1000 < 1 million
+	}
+  
+	if (num >= 100000 && num < 10000000) {
+	  return `${(num / 100000).toFixed(decimalPlaces)}L`.replace(/\.00?$/, ''); // convert to M for number from > 1 million
+	}
+  
+	if (num >= 10000000) {
+	  return `${(num / 10000000).toFixed(decimalPlaces)}Cr`.replace(/\.00?$/, ''); // convert to M for number from > 1 million
+	}
+  
+	return num.toFixed((decimalPlaces)).replace(/\.00?$/, '');
+}
+  
+
+export function truncateString(str = '', maxLength = 30) {
+	if (!str) return '';
+	if (str.length > maxLength) {
+	  return str.substring(0, maxLength).concat('...');
+	}
+  
+	return str;
+}
+
+export function formatNumberWithCurrency(number = 0, currencySymbol = '₹') {
+	if (isNaN(number)) return '';
+	return `${currencySymbol}${new Intl.NumberFormat().format(number)}`;
+}
+
+export const getBeImgaeFullUrl = (url) => {
+	console.log(`${process.env.REACT_APP_API_PREFIX}/${url}`)
+	return `${process.env.REACT_APP_API_PREFIX}/${url}`
+}

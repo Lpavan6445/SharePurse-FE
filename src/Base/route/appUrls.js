@@ -1,3 +1,4 @@
+const BASE = '';
 const LOG_IN = '/login/';
 const SIGN_UP = '/signup/';
 

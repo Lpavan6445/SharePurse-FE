@@ -26,8 +26,9 @@ export function initHttp() {
   axiosInstance.interceptors.request.use(function (config) { // eslint-disable-line
     // Add user token to header
     // window.cookies = cookies
-    if (cookies.get(AUTH_COOKIE_KEY)) {
-      config.headers['Authorization'] = `Bearer ${cookies.get(AUTH_COOKIE_KEY)}`; // eslint-disable-line
+    const authCokie = cookies.get(AUTH_COOKIE_KEY)
+    if (authCokie) {
+      config.headers['Authorization'] = `Bearer ${authCokie}`; // eslint-disable-line
     }
 
     // if (cookies.get('csrftoken')) {

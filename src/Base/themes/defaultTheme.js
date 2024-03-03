@@ -1,6 +1,6 @@
 import { createTheme } from "@material-ui/core";
 
-const BUTTON_BG_COLOR = "#5E5DF0";
+const BUTTON_BG_COLOR = "#3f28f7e6";
 const defaultTheme = createTheme({
 	breakpoints: {
 		xs: 0,
@@ -59,7 +59,6 @@ const defaultTheme = createTheme({
 			},
 			input: {
 				borderRadius: '7px',
-				backgroundColor: 'rgb(238,241,252)'
 			}
 		},
 		MuiOutlinedInput: {
@@ -71,7 +70,6 @@ const defaultTheme = createTheme({
 			input: {
 				padding: '0.5rem 1rem',
 				borderRadius: '7px',
-				backgroundColor: 'rgb(238,241,252)'
 			}
 		},
 	},

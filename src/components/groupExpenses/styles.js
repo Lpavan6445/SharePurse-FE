@@ -12,29 +12,36 @@ export const viewGroupStyles = makeStyles((theme) => ({
         columnGap: theme.spacing(6),
         rowGap: theme.spacing(1),
         flexDirection: 'column',
-        [theme.breakpoints.up('lg')]: {
+        [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
         },
+        margin: '1rem 0',
+        padding: '1rem'
     },
     cardStyles: {
         width: '100%',
-        // [theme.breakpoints.up('xs')]: {
-        //     width: '100%',
-        // },
-        // [theme.breakpoints.up('lg')]: {
-        //     width: '50%',
-        // },
-        height: theme.spacing(12),
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+            height: '3.125rem',
+        },
+        [theme.breakpoints.up('lg')]: {
+            width: '50%',
+            height: '6rem'
+        },
 
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        width: "50%",
         padding: "1rem",
-        cursor: 'auto',
     },
     cardTextWrapper: {
         display: "flex",
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: "row-reverse",
+            gap: '1rem',
+            alignItems: "center",
+        },
+
         justifyContent: "center",
         flexDirection: "column",
         fontSize: "1.5rem" ,
@@ -50,7 +57,12 @@ export const viewGroupStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
+        [theme.breakpoints.down('sm')]: {
+            justifyContent: 'space-between',
+        },
         gap: '1rem',
         margin: '3rem 0 1rem',
+        flexWrap: 'wrap',
     },
+
 }));

@@ -113,18 +113,17 @@ function LogInPage({ history }) {
             </Grid> */}
           </Grid>
           <ButtonComponent
+            fullWidth
             type="submit"
             className={classes.submit}
             isLoading={isLoading}
           >
             Log In
           </ButtonComponent>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link to={AppUrls.SIGN_UP} variant="body2">
+          <Grid item xs={12} justifyContent="flex-end" style={{ marginTop: '0.7rem', textAlign: 'right' }}>
+            <Link to={AppUrls.SIGN_UP} variant="body2">
                 Create Account ? Sign Up
               </Link>
-            </Grid>
           </Grid>
         </form>
       </div>

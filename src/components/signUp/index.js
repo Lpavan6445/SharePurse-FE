@@ -98,7 +98,6 @@ function SignUpPage({ history }) {
               <ReactHookFormInput
                 variant="outlined"
                 fullWidth
-                autoFocus
                 autoComplete={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
                 name={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
                 label={SIGN_UP_FROM_DETAILS[FIRSR_NAME].labelText}
@@ -110,7 +109,6 @@ function SignUpPage({ history }) {
               <ReactHookFormInput
                 variant="outlined"
                 fullWidth
-                autoFocus
                 autoComplete={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
                 name={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
                 label={SIGN_UP_FROM_DETAILS[LAST_NAME].labelText}
@@ -150,6 +148,7 @@ function SignUpPage({ history }) {
             </Grid> */}
             <Grid item xs={12}>
               <ButtonComponent
+                fullWidth
                 type="submit"
                 className={classes.submit}
                 isLoading={isLoading}
@@ -157,12 +156,10 @@ function SignUpPage({ history }) {
                 Sign Up
               </ButtonComponent>
             </Grid>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link to={AppUrls.LOG_IN} variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
+            <Grid item xs={12} justifyContent="flex-end" style={{ marginTop: '0.7rem', textAlign: 'right' }}>
+              <Link to={AppUrls.LOG_IN} variant="body2">
+                Already have an account? Sign in
+              </Link>
             </Grid>
           </Grid>
         </Stack>

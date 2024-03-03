@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,6 +20,8 @@ import moneyIcon from '../assets/moneyIcon.png';
 import dashboardIcon from '../assets/dashboardIcon.svg';
 import groupsIcon from '../assets/groupsIcon.svg';
 import sharePurseIcon1 from '../assets/sharePurseIcon1.jpeg';
+import personalExpense from 'assets/personalExpense.svg';
+import AppContextBase from 'Base/appContext';
 
 const drawerWidth = 280;
 const useStyles = makeStyles((theme) => ({
@@ -115,6 +117,7 @@ export const MenuItemCustom = withStyles((theme) => ({
  }))(Box);
 
 const FixedSidebar = ({ history, children }) => {
+  const { setUserData, userData, logOutUser } = useContext(AppContextBase);
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -138,7 +141,7 @@ const FixedSidebar = ({ history, children }) => {
     },
     {
         title: 'My Expense',
-        icon: groupsIcon,
+        icon: personalExpense,
         altIconTxt: 'groupsIcon',
         path: AppUrls.PERSONAL_EXPENSE,
     }
@@ -177,6 +180,9 @@ const FixedSidebar = ({ history, children }) => {
             })
         }
       </List>
+      <ListItem onClick={logOutUser}>
+        Logout
+      </ListItem>
     </div>
   );
 

@@ -70,7 +70,7 @@ const styles = makeStyles((theme) => ({
 const SPLIT_WITH_KEY = "split_with";
 const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
   const classes = styles();
-  const { setUserData, userMetaData, getUserMetaData } =
+  const { setUserData, userMetaData, userUtils } =
     useContext(AppContextBase);
   const { groupMetaData, setGroupMetadata } = useContext(GroupContextBase);
   const [isLoading, setIsLoading] = useState(false);
@@ -146,7 +146,7 @@ const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
               <hr />
               <Typography variant="h5">
                 {defaultEditValues[PAID_BY_ADD_EXPENSES_DK]?.first_name} paid{" "}
-                {defaultEditValues[TOTAL_AMOUNT_ADD_EXPENSES_DK]}
+                {userUtils(defaultEditValues[TOTAL_AMOUNT_ADD_EXPENSES_DK], 'formateNumberWithCurrency')}
               </Typography>
               <hr />
               <Typography variant="h7">Split between:</Typography>
@@ -155,11 +155,10 @@ const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
                   return (
                     <Typography>
                       {idx + 1}. {partipant.first_name} owes{" "}
-                      {partipant.amount_paid}
+                      {userUtils(partipant.amount_paid, 'formateNumberWithCurrency')}
                     </Typography>
                   );
                 })}
-                {/* {defaultEditValues[PAID_BY_ADD_EXPENSES_DK].first_name} paid {defaultEditValues[TOTAL_AMOUNT_ADD_EXPENSES_DK]} */}
               </Typography>
             </Grid>
             <Grid item xs={12}>

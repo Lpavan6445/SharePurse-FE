@@ -31,7 +31,12 @@ import AppContextBase from "../../../Base/appContext";
 const styles = makeStyles((theme) => ({
   container: {
     padding: '1rem',
-    backgroundColor: theme.moduleColurs.appBackgroundColor
+    '& .MuiOutlinedInput-input': {
+      backgroundColor: 'unset',
+    },
+    '& .MuiInputBase-root':{
+      // boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'
+    }
   },
   form: {
     width: "100%", // Fix IE 11 issue.

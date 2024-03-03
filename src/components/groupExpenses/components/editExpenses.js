@@ -311,6 +311,7 @@ const EditExpenses = ({ defaultValues, match, afterExpenseAdded }) => {
               fullWidth
               disabled={isButtonDisabledRef.current.isDisabled}
               onClick={handleSubmit(addExpense)}
+              isLoading={isLoading}
             >
               Add Expense
             </ButtonComponent>

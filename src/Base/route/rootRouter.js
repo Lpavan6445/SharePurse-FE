@@ -7,8 +7,9 @@ import SignUpPage from '../../components/signUp';
 import LogInPage from '../../components/logIn/LogInPage';
 import LoggedInLayout from '../../layout';
 import PrimarySearchAppBar from "../../components/Appbar/appbar";
+import LoaderComponent from "components/globalComponents/LoaderComponent";
 const RootRouter = () => {
-    const { isLoggedIn } = useContext(AppContextBase);
+    const { isLoggedIn, isLoading } = useContext(AppContextBase);
 
     const getLoggedInRoutes = (
         <Switch>
@@ -24,6 +25,10 @@ const RootRouter = () => {
             <Route path="*" component={SignUpPage} />
         </Switch>
     )
+
+    if (isLoading) {
+        return <LoaderComponent />;
+    }
     return (
         <BrowserRouter basename={AppUrls.BASE}>
            {isLoggedIn() ? getLoggedInRoutes : getNonLoggedInRoutes}

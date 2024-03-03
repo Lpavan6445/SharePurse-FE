@@ -5,10 +5,11 @@ import AppUrls from '../../../Base/route/appUrls';
 import AppContextBase from '../../../Base/appContext';
 import ButtonComponent from '../../globalComponents';
 import CenteredModal from '../../globalComponents/Modal';
-import CreateGroup from './createGroup';
+import CreateEditGroup from './createGroup';
 import { InlineStyleFlexbox, InlineStylecDiv } from '../../globalComponents/InlineStyledCommonComponents';
 import AddIcon from '@material-ui/icons/Add';
 import { PageHeader } from '../../globalComponents/commonComponents';
+import { getBeImgaeFullUrl } from 'global/utils';
 
 const styles = makeStyles((theme) => ({
   groupsListWrapper: {
@@ -44,6 +45,7 @@ const GroupsList = ({ history, match }) => {
   const classes = styles();
   const { setUserData, userMetaData, getUserMetaData } = useContext(AppContextBase);
   const [createGroupModal, setCreateModal] = useState(false);
+
   const listRow = (groupDt, index) => {
     return (
       <>
@@ -63,7 +65,7 @@ const GroupsList = ({ history, match }) => {
             >
               {groupDt.group_name}
             </InlineStylecDiv>
-            <Avatar style={{ width: '85px', height: '85px', borderRadius: '150px' }} alt={groupDt.group_name} src="https://horizon-ui.com/horizon-tailwind-react/static/media/avatar4.54d5c1de851c273b2cd9.png" />
+            <Avatar style={{ width: '85px', height: '85px', borderRadius: '150px' }} alt={groupDt.group_name} src={getBeImgaeFullUrl(groupDt.group_image)} />
             <InlineStylecDiv>
               6 Members
             </InlineStylecDiv>
@@ -90,6 +92,10 @@ const GroupsList = ({ history, match }) => {
       </>
   )
 
+  const afterCreatingGroup = async (groupId) => {
+    history.push(AppUrls.VIEW_GROUP(groupId))
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       <PageHeader>
@@ -109,12 +115,16 @@ const GroupsList = ({ history, match }) => {
         isOpen={createGroupModal}
         title="Create Group"
         onClose={() => setCreateModal(false)}
-        width="100"
+        width="fit-content"
         maxWidth="92%"
-        height={240}
+        height="fit-content"
         minHeight={240}
       >
-        <CreateGroup history={history} />
+        <CreateEditGroup 
+          history={history} 
+          afterCreateEditGroupClick={afterCreatingGroup}  
+          isInEditMode={false}
+        />
       </CenteredModal>
     </div>
   )
