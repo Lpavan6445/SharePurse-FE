@@ -10,7 +10,7 @@ import { Breadcrumbs, Container, Link, Typography } from "@material-ui/core";
 import GroupsList from "./components/groupExpenses/components/groupsList";
 import AppAppBar from "./AppAppBar.js";
 import Wrapper from "./hero.js";
-import FixedSidebar from "./components/fixedSidebar.js";
+import FixedSidebar from "./components/SideNavBar/fixedSidebar.js";
 import LoaderComponent from "./components/globalComponents/LoaderComponent/index.js";
 
 const Homepage = React.lazy(() => import("./components/homepage/index.js"));

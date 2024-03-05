@@ -6,6 +6,9 @@ import axiosInstance from "./api/axios";
 import getThemes from './themes/index';
 import { ThemeProvider } from "@material-ui/core";
 import { formatNumberWithCurrency } from "global/utils";
+import { formatedError } from "global/utils";
+import { toast } from "react-toastify";
+import { isEqual } from "lodash";
 
 const AppContextBase = createContext({});
 const AppContext = ({ children }) => {
@@ -32,30 +35,33 @@ const AppContext = ({ children }) => {
     try {
       activateLoader && setIsLoading(true);
       const logCheck = isLoggedIn();
+      console.log(logCheck, 'logCheck');
       if (logCheck) {
         const res = await axiosInstance.get(ApiUrls.GET_USER_META_DATA);
         const formatedUsersData = res.data.users.reduce((acc, curr) => {
           acc[curr.id] = curr;
           return acc;
         }, {});
+
         const data = {
           ...res.data,
           users: formatedUsersData,
         };
+        setUserData(res.data.profile_data)
         setUserMetaData(data);
       }
     } catch (error) {
       console.error(error.message || "Something Went Wrong");
+      toast.success(formatedError(error, "Something Went Wrong"));
     } finally {
       activateLoader && setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    isLoggedIn();
-    getUserMetaData();
-  }, []);
   
+  useEffect(() => {
+    getUserMetaData();
+  },[]);
+
   const userUtils = (number = '', type='formateNumberWithCurrency') => {
     const currencySymbol = '₹';
 
@@ -66,6 +72,8 @@ const AppContext = ({ children }) => {
 
      return utilsEnum[type] ? utilsEnum[type]() : number
   };
+
+  console.log(children, 'children')
   return (
     <AppContextBase.Provider
       value={{
@@ -73,7 +81,6 @@ const AppContext = ({ children }) => {
         setUserData,
         isLoggedIn,
         logOutUser,
-        userData,
         userMetaData,
         setUserMetaData,
         getUserMetaData,

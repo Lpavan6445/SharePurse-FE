@@ -4,16 +4,25 @@ export const formatedError = (
 	error,
 	defaultErrorMsg = 'Something Went Wrong'
 ) => {
-	if (error?.message) {
-		return error.message;
-	}
 
 	if (error?.error) {
 		return error.error;
 	}
 
+	if (error?.message) {
+		return error.message;
+	}
+
 	if (error?.detail) {
 		return error.detail;
+	}
+
+	if (error?.response?.data) {
+		if (error?.response?.data.error) {
+			return error?.response?.data.error
+		}
+
+		return error?.response?.data;
 	}
 
 	return defaultErrorMsg;
@@ -53,6 +62,5 @@ export function formatNumberWithCurrency(number = 0, currencySymbol = '₹') {
 }
 
 export const getBeImgaeFullUrl = (url) => {
-	console.log(`${process.env.REACT_APP_API_PREFIX}/${url}`)
 	return `${process.env.REACT_APP_API_PREFIX}/${url}`
 }

@@ -11,17 +11,20 @@ import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import InfoIcon from '@material-ui/icons/Info';
-import { Box, MenuItem } from '@material-ui/core';
-import AppUrls from '../Base/route/appUrls';
+import { Avatar, Box, MenuItem } from '@material-ui/core';
+import AppUrls from '../../Base/route/appUrls';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
-import { InlineStyleFlexbox } from './globalComponents/InlineStyledCommonComponents';
-import moneyIcon from '../assets/moneyIcon.png';
-import dashboardIcon from '../assets/dashboardIcon.svg';
-import groupsIcon from '../assets/groupsIcon.svg';
-import sharePurseIcon1 from '../assets/sharePurseIcon1.jpeg';
+import { ImgInlineStyle, InlineStyleFlexbox, InlineStylecDiv } from '../globalComponents/InlineStyledCommonComponents';
+import moneyIcon from 'assets/moneyIcon.png';
+import dashboardIcon from 'assets/dashboardIcon.svg';
+import groupsIcon from 'assets/groupsIcon.svg';
+import logout from 'assets/logoutIcon.svg';
+import sharePurseIcon1 from 'assets/sharePurseIcon1.jpeg';
 import personalExpense from 'assets/personalExpense.svg';
 import AppContextBase from 'Base/appContext';
+import { getBeImgaeFullUrl } from 'global/utils';
+import CenteredModal from '../globalComponents/Modal';
 
 const drawerWidth = 280;
 const useStyles = makeStyles((theme) => ({
@@ -112,6 +115,12 @@ export const MenuItemCustom = withStyles((theme) => ({
             filter: "grayscale(100%)",
             color: theme.moduleColurs.globalcolor,
             fontSize: '1.5rem',
+       },
+       '&:hover': {
+          filter: "unset !important",
+          '& .MuiTypography-root': {
+            filter: "unset !important",
+          }
        }
     } 
  }))(Box);
@@ -121,6 +130,7 @@ const FixedSidebar = ({ history, children }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openSettingPage, setSettingPage] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -148,7 +158,7 @@ const FixedSidebar = ({ history, children }) => {
   ]
 
   const drawer = (
-    <div>
+    <>
       <Box className={classes.sidebarLogoWrapper}>
         <div className={classes.sidebarLogo}>
             <img width="40" height="40" src={sharePurseIcon1} alt="coins"/>
@@ -157,33 +167,57 @@ const FixedSidebar = ({ history, children }) => {
           Share Purse
         </Typography>
       </Box>
-      <List className={classes.list}>
-        {
-            MENU_BAR_ENUM.map((menu, idx) => {
-                return (
-                    <ListItem 
-                        key={`${menu.title}_${idx}`}
-                        button 
-                        onClick={() => {
-                            history.push(menu.path)
-                            // handleDrawerToggle();
-                        }}
-                    >
-                        <MenuItemCustom className={history.location.pathname.includes(menu.path.split('/')[1]) ? classes.activeMenu : ''}>
-                            <img src={menu.icon} alt={menu.altIconTxt} />
-                            <Typography>
-                                {menu.title || ''}
-                            </Typography>
-                        </MenuItemCustom>
-                    </ListItem>
-                )
-            })
-        }
-      </List>
-      <ListItem onClick={logOutUser}>
-        Logout
-      </ListItem>
-    </div>
+      <InlineStyleFlexbox alignItems="unset" justifyContent="space-between" flexDirection="column" height="100%">
+        <List className={classes.list}>
+          {
+              MENU_BAR_ENUM.map((menu, idx) => {
+                  return (
+                      <ListItem 
+                          key={`${menu.title}_${idx}`}
+                          button 
+                          onClick={() => {
+                              history.push(menu.path)
+                              // handleDrawerToggle();
+                          }}
+                      >
+                          <MenuItemCustom className={history.location.pathname.includes(menu.path.split('/')[1]) ? classes.activeMenu : ''}>
+                              <img src={menu.icon} alt={menu.altIconTxt} />
+                              <Typography>
+                                  {menu.title || ''}
+                              </Typography>
+                          </MenuItemCustom>
+                      </ListItem>
+                  )
+              })
+          }
+        </List>
+        <List className={classes.list}>
+          <ListItem button onClick={() => setSettingPage(true)}>
+            <MenuItemCustom>
+              <Avatar
+                alt={""}
+                src={getBeImgaeFullUrl(userData?.image)}
+                imgProps={{
+                  width: "40%",
+                  height: "40%",
+                }}
+              />
+              <Typography>
+                Settings
+              </Typography>
+            </MenuItemCustom>
+          </ListItem>
+          <ListItem button onClick={logOutUser}>
+            <MenuItemCustom >
+              <ImgInlineStyle src={logout} altIcon='logutIcon' />
+              <Typography>
+                Logout
+              </Typography>
+            </MenuItemCustom>
+          </ListItem>
+        </List>
+      </InlineStyleFlexbox>
+    </>
   );
 
   return (
@@ -226,7 +260,17 @@ const FixedSidebar = ({ history, children }) => {
             <MenuIcon />
         </IconButton>
       </Hidden>
-      {/* Show a MenuIcon for smaller screens to toggle the sidebar */}
+      <CenteredModal
+        isOpen={openSettingPage}
+        title="Create Group"
+        onClose={() => setSettingPage(false)}
+        width="fit-content"
+        maxWidth="92%"
+        height="fit-content"
+        minHeight={240}
+      > 
+        Settings
+      </CenteredModal>
     </div>
   );
 };

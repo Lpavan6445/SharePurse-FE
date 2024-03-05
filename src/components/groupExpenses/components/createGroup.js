@@ -1,7 +1,6 @@
-import React, { createRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { InlineStylecDiv } from "../../globalComponents/InlineStyledCommonComponents";
 import {
-  FormHelperText,
   Grid,
   Typography,
   makeStyles,
@@ -18,24 +17,17 @@ import ApiUrls from "../../../Base/api/apiUrls";
 import AppUrls from "../../../Base/route/appUrls";
 
 import { Avatar, Button as MuiButton } from "@material-ui/core";
-import { grey } from "@material-ui/core/colors";
-import {
-  CloudUpload as MuiCloudUpload,
-  Delete as MuiDelete,
-} from "@material-ui/icons";
-import { spacing } from "@material-ui/system";
 import ReactHookFormUploadFiles from "components/globalComponents/reactHookFormWrappedComponents/formUploadInput";
-// import styled from "styled-components";
 
 import { IconButton } from "@material-ui/core";
-import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
-import ConditionalRender from "components/globalComponents/conditionalRender";
+import { Edit as EditIcon } from "@material-ui/icons";
 import {
   CREATE_GROUP,
   GROUP_IMAGE,
   GROUP_NAME,
 } from "../constants/creatEditGroupConstants";
-import { isArray, isObject } from "lodash";
+import { isObject } from "lodash";
+import AppContextBase from "Base/appContext";
 
 const styles = makeStyles((theme) => ({
   inputStyles: {
@@ -92,7 +84,8 @@ const CreateEditGroup = ({
   isInEditMode = false,
   afterCreateEditGroupClick = () => {},
 }) => {
-  console.log(defaultValues, "defaultData");
+  const { setUserData, userMetaData, getUserMetaData } = useContext(AppContextBase);
+
   const classes = styles();
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -122,6 +115,7 @@ const CreateEditGroup = ({
         },
       });
 
+      await getUserMetaData(false);
       history.push(AppUrls.VIEW_GROUP(res.data.group_id));
       toast("Group created successfully!");
     } catch (error) {
@@ -155,6 +149,7 @@ const CreateEditGroup = ({
         }
       );
 
+      await getUserMetaData(false);
       await afterCreateEditGroupClick(res.data.group_id);
       toast("Group updated successfully!");
     } catch (error) {

@@ -3,12 +3,7 @@ import ApiUrls from "../../../../Base/api/apiUrls";
 import ConditionalRender from "../../../globalComponents/conditionalRender";
 import LoaderComponent from "../../../globalComponents/LoaderComponent";
 import axiosInstance from "../../../../Base/api/axios";
-import {
-  Avatar,
-  Box,
-  Grid,
-  useTheme,
-} from "@material-ui/core";
+import { Avatar, Box, Grid, Hidden, useTheme } from "@material-ui/core";
 import {
   ImgInlineStyle,
   InlineStyleFlexbox,
@@ -26,10 +21,10 @@ import SettleBalance from "./settleBalance";
 import {
   CustomCardComponent,
   PageHeader,
-  LightTooltip,
 } from "components/globalComponents/commonComponents";
 import { viewGroupStyles } from "../../styles";
 import arrowBlackColor from "assets/arrowBlackColor.svg";
+import settingsIcon from "assets/settingsIcon.svg";
 import linesIcons from "assets/linesIcons.svg";
 import GroupExpensesService from "../../services/groupExpensesService";
 import { toast } from "react-toastify";
@@ -69,7 +64,6 @@ const ViewGroup = ({ history, match }) => {
       const res = await axiosInstance.get(ApiUrls.GROUP_EXPENSES(groupId));
 
       const formatedData = GroupExpensesService.groupDataByMonth(res.data);
-      console.log(formatedData, "formatedData");
       setGroupExpenses(formatedData);
     } catch (error) {
       console.error(error.message || "Something Went Wrong");
@@ -100,55 +94,12 @@ const ViewGroup = ({ history, match }) => {
     await intitalApi();
     setAddExpensesModal(false);
     setViewExpenseModal({ modal: false, data: {} });
+    setOpenSettleBalanceModal({ modal: false, data: {} });
   };
 
   const viewExpense = (expense) => {
     setViewExpenseModal(expense);
   };
-
-  const getBackDetails = useCallback(() => {
-    return (
-      <InlineStyleFlexbox
-        alignItems="flex-end"
-        gap="0.5rem"
-        flexDirection="column"
-      >
-        {Object.entries(groupBalanceData.dict || {}).map(([key, balance]) => {
-          if (balance < 0) return "";
-          return (
-            <InlineStylecDiv fontWeight="700" fontSize="1rem">
-              {userMetaData.users?.[key]?.first_name || key} owes you{" "}
-              <span style={{ color: theme.moduleColurs.greencolor }}>
-                {balance}
-              </span>
-            </InlineStylecDiv>
-          );
-        })}
-      </InlineStyleFlexbox>
-    );
-  }, [groupBalanceData.dict]);
-
-  const getOweDetails = useCallback(() => {
-    return (
-      <InlineStyleFlexbox
-        alignItems="flex-end"
-        gap="0.5rem"
-        flexDirection="column"
-      >
-        {Object.entries(groupBalanceData.dict || {}).map(([key, balance]) => {
-          if (balance > 0) return "";
-          return (
-            <InlineStylecDiv fontWeight="700" fontSize="1rem">
-              You owe {userMetaData.users?.[key]?.first_name || key}{" "}
-              <span style={{ color: theme.moduleColurs.redcolor }}>
-                {balance}
-              </span>
-            </InlineStylecDiv>
-          );
-        })}
-      </InlineStyleFlexbox>
-    );
-  }, [groupBalanceData.dict]);
 
   const afterGroupEdit = async () => {
     await getGroupExpensesMetaData(false);
@@ -160,124 +111,46 @@ const ViewGroup = ({ history, match }) => {
       elseShowThis={<LoaderComponent position="center" />}
     >
       <PageHeader>
-        <InlineStyleFlexbox justifyContent="flex-start" gap="1rem">
-          <ImgInlineStyle
-            src={arrowBlackColor}
-            width={40}
-            height={40}
-            cursor="pointer"
-            onClick={() => history.push(AppUrls.GROUPS_LIST)}
-          />
-          <Avatar
-            alt={groupMetaData?.group_details.group_name}
-            src={getBeImgaeFullUrl(groupMetaData?.group_details?.group_image)}
-          />
-          {groupMetaData?.group_details?.group_name || ""}
-          <EditIcon onClick={() => setCreateModal(true)} />
-        </InlineStyleFlexbox>
+        <Hidden xsDown implementation="css">
+          <InlineStyleFlexbox justifyContent="flex-start" gap="1rem">
+            <ImgInlineStyle
+              src={arrowBlackColor}
+              width={40}
+              height={40}
+              cursor="pointer"
+              onClick={() => history.push(AppUrls.GROUPS_LIST)}
+            />
+            <Avatar
+              alt={groupMetaData?.group_details.group_name}
+              src={getBeImgaeFullUrl(groupMetaData?.group_details?.group_image)}
+            />
+            <InlineStyleFlexbox justifyContent="space-between">
+              <div
+                style={{
+                  width: "100%",
+                  maxWidth: "36vw",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textAlign: "left",
+                }}
+              >
+                {groupMetaData?.group_details?.group_name || ""}
+              </div>
+              <ImgInlineStyle
+                src={settingsIcon}
+                width={35}
+                height={35}
+                cursor="pointer"
+                onClick={() => setCreateModal(true)}
+              />
+            </InlineStyleFlexbox>
+          </InlineStyleFlexbox>
+        </Hidden>
       </PageHeader>
+
       <>
         <GroupTopCards groupBalanceData={groupBalanceData} />
-        <Box className={classes.cardsWrapper}>
-          <CustomCardComponent
-            className={classes.cardStyles}
-            data-aos="flip-left"
-          >
-            <Box className={classes.cardTextWrapper}>
-              <InlineStylecDiv fontWeight="bold" fontSize="2.5rem">
-                {userUtils(
-                  groupBalanceData.total_spends,
-                  "formateNumberWithCurrency"
-                )}
-              </InlineStylecDiv>
-              <InlineStylecDiv fontSize="1.2rem" color="gray">
-                Total Spends
-              </InlineStylecDiv>
-            </Box>
-          </CustomCardComponent>
-          <CustomCardComponent
-            className={classes.cardStyles}
-            data-aos="flip-left"
-          >
-            <Box className={classes.cardTextWrapper}>
-              <InlineStylecDiv
-                fontWeight="bold"
-                fontSize="2.5rem"
-                color={theme.moduleColurs.greencolor}
-              >
-                {userUtils(
-                  groupBalanceData.total_owed,
-                  "formateNumberWithCurrency"
-                )}
-              </InlineStylecDiv>
-              <InlineStylecDiv fontSize="1.2rem" color="gray">
-                You get back
-              </InlineStylecDiv>
-              <LightTooltip title={getBackDetails()}>
-                <span>
-                  <ImgInlineStyle
-                    src={linesIcons}
-                    width={20}
-                    height={20}
-                    position="absolute"
-                    bottom="11px"
-                    right="11px"
-                    cursor="pointer"
-                  />
-                </span>
-              </LightTooltip>
-            </Box>
-          </CustomCardComponent>
-          <CustomCardComponent
-            className={classes.cardStyles}
-            data-aos="flip-right"
-          >
-            <Box className={classes.cardTextWrapper}>
-              <InlineStylecDiv
-                fontWeight="bold"
-                fontSize="2.5rem"
-                color={theme.moduleColurs.redcolor}
-              >
-                {userUtils(
-                  -(groupBalanceData.total_borrowed || -0),
-                  "formateNumberWithCurrency"
-                )}
-              </InlineStylecDiv>
-              <InlineStylecDiv fontSize="1.2rem" color="gray">
-                You Owe
-              </InlineStylecDiv>
-              <LightTooltip title={getOweDetails()}>
-                <span>
-                  <ImgInlineStyle
-                    src={linesIcons}
-                    width={20}
-                    height={20}
-                    position="absolute"
-                    bottom="11px"
-                    right="11px"
-                    cursor="pointer"
-                  />
-                </span>
-              </LightTooltip>
-            </Box>
-          </CustomCardComponent>
-          <CustomCardComponent
-            className={classes.cardStyles}
-            data-aos="flip-right"
-          >
-            <Box className={classes.cardTextWrapper}>
-              <InlineStylecDiv fontWeight="bold" fontSize="2.5rem">
-                {userUtils(
-                  groupBalanceData.settled_amount,
-                  "formateNumberWithCurrency"
-                )}
-              </InlineStylecDiv>
-              <InlineStylecDiv fontSize="1.2rem" color="gray">
-                Settled
-              </InlineStylecDiv>
-            </Box>
-          </CustomCardComponent>
-        </Box>
 
         <Box className={classes.addButtonsWrapper}>
           <ButtonComponent
@@ -397,7 +270,6 @@ const ViewGroup = ({ history, match }) => {
             afterExpenseAdded={afterExpenseAdded}
           />
         </CenteredModal>
-
         <CenteredModal
           isOpen={createGroupModal}
           title="Create Group"

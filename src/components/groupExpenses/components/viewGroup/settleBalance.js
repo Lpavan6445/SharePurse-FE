@@ -1,13 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import {
-  ADD_EXPENSES_FORM,
-  CATEGORY_ADD_EXPENSES_DK,
-  DESCRIPTION_ADD_EXPENSES_DK,
-  GROUP_ADD_EXPENSES_DK,
-  PAID_BY_ADD_EXPENSES_DK,
-  TITLE_ADD_EXPENSES_DK,
-  TOTAL_AMOUNT_ADD_EXPENSES_DK,
-} from "../../constants/addExpensesConstants";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Checkbox,
   Container,
@@ -17,11 +14,9 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { useForm } from "react-hook-form";
-import ReactHookFormInput from "../../../globalComponents/reactHookFormWrappedComponents/formInput";
 import ReactHookSearchWithSelect, {
   GROUPED_SELECT_KEY,
 } from "../../../globalComponents/reactHookFormWrappedComponents/formSearchWithSelect";
-import GroupContextBase from "../../groupContext";
 import ButtonComponent from "../../../globalComponents";
 import {
   ImgInlineStyle,
@@ -32,18 +27,16 @@ import axiosInstance from "../../../../Base/api/axios";
 import ApiUrls from "../../../../Base/api/apiUrls";
 import { toast } from "react-toastify";
 import { formatedError } from "../../../../global/utils";
-import AppUrls from "../../../../Base/route/appUrls";
 import AppContextBase from "../../../../Base/appContext";
-import EditExpenses from "../editExpenses";
 import ConditionalRender from "../../../globalComponents/conditionalRender";
-import { 
+import {
   CONFIR_SETTLE_FORM,
   SETTLE_UP_PERSONS_VIEW,
   PAYMENT_METHOD,
   SETTLE_BALANCES,
-  PAYMENT_METHODS
- } from '../../constants/settleBalances';
- import arrowBlackColor from "../../../../assets/arrowBlackColor.svg";
+  PAYMENT_METHODS,
+} from "../../constants/settleBalances";
+import arrowBlackColor from "../../../../assets/arrowBlackColor.svg";
 
 const styles = makeStyles((theme) => ({
   container: {
@@ -79,9 +72,15 @@ const styles = makeStyles((theme) => ({
 
 const DEFAULT_VIEW = {
   type: SETTLE_UP_PERSONS_VIEW,
-  data: {}
+  data: {},
 };
-const SettleBalance = ({ history, match, groupId, data = {}, afterExpenseAdded }) => {
+const SettleBalance = ({
+  history,
+  match,
+  groupId,
+  data = {},
+  afterExpenseAdded,
+}) => {
   const theme = useTheme();
   const { userMetaData } = useContext(AppContextBase);
   const [view, setView] = useState(DEFAULT_VIEW);
@@ -97,72 +96,85 @@ const SettleBalance = ({ history, match, groupId, data = {}, afterExpenseAdded }
     formState: { errors },
   } = useForm({
     defaultValues: {
-      [PAYMENT_METHOD]: PAYMENT_METHODS[0]
+      [PAYMENT_METHOD]: PAYMENT_METHODS[0],
     },
   });
 
-
   const showSettleUpForm = (userID) => {
-    setView({ 
-      type: CONFIR_SETTLE_FORM, 
-      data: { payee: userID } 
-    })
+    setView({
+      type: CONFIR_SETTLE_FORM,
+      data: { payee: userID },
+    });
   };
 
-  const showListOfBalanceSettledList = useCallback(() => (
-    <InlineStyleFlexbox
-      flexDirection="column"
-      alignItems="space-start"
-      gap="0.5rem"
-      width="100%"
-    >
-      <ConditionalRender 
-        shouldRender={Object.entries(data || {}).length}
-        elseShowThis={<Typography variant="body2" align="center">No Pending Balances to Settle</Typography>}
+  const showListOfBalanceSettledList = useCallback(
+    () => (
+      <InlineStyleFlexbox
+        flexDirection="column"
+        alignItems="space-start"
+        gap="0.5rem"
+        width="100%"
       >
-        {Object.entries(data || {})?.map(([userID, balance], index) => {
-          if (balance > 0) return "";
-          return (
-            <InlineStyleFlexbox justifyContent="space-between">
-              <InlineStylecDiv fontWeight="700" fontSize="1rem">
-                {index + 1}. You owe{" "}
-                <span style={{ fontSize: "1rem" }}>
-                  {userMetaData.users?.[userID]?.first_name || userID}{" "}
-                </span>
-                <span style={{ color: theme.moduleColurs.redcolor }}>
-                  {balance}
-                </span>
-              </InlineStylecDiv>
-              <ButtonComponent 
-                size="small" 
-                onClick={() => showSettleUpForm(userID)}
-              >
-                Settle
-              </ButtonComponent>
-            </InlineStyleFlexbox>
-          );
-        })}
-      </ConditionalRender>
-    </InlineStyleFlexbox>
-  ),[data]);
+        <ConditionalRender
+          shouldRender={Object.entries(data || {}).length}
+          elseShowThis={
+            <Typography variant="body2" align="center">
+              No Pending Balances to Settle
+            </Typography>
+          }
+        >
+          {Object.entries(data || {})?.map(([userID, balance], index) => {
+            if (balance > 0) return "";
+            return (
+              <InlineStyleFlexbox justifyContent="space-between">
+                <InlineStylecDiv fontWeight="700" fontSize="1rem">
+                  {index + 1}. You owe{" "}
+                  <span style={{ fontSize: "1rem" }}>
+                    {userMetaData.users?.[userID]?.first_name || userID}{" "}
+                  </span>
+                  <span style={{ color: theme.moduleColurs.redcolor }}>
+                    {balance}
+                  </span>
+                </InlineStylecDiv>
+                <ButtonComponent
+                  size="small"
+                  onClick={() => showSettleUpForm(userID)}
+                >
+                  Settle
+                </ButtonComponent>
+              </InlineStyleFlexbox>
+            );
+          })}
+        </ConditionalRender>
+      </InlineStyleFlexbox>
+    ),
+    [data]
+  );
 
-  const settleBalances = async (formData={}) => {
+  const settleBalances = async (formData = {}) => {
     try {
       setIsLoading(true);
       const payload = {
         settle_up_method: formData[PAYMENT_METHOD].id,
         payee: view.data.payee,
       };
-      console.log(payload, 'payload')
-      const res = await axiosInstance.post(ApiUrls.SETTLE_BALANCES(groupId), payload);
+      const res = await axiosInstance.post(
+        ApiUrls.SETTLE_BALANCES(groupId),
+        payload
+      );
       await afterExpenseAdded();
     } catch (error) {
       console.error(error.message || "Something Went Wrong");
-      toast.error(formatedError(error, 'Failed to settle up balances. please try again after some time.'));
+      toast.error(
+        formatedError(
+          error,
+          "Failed to settle up balances. please try again after some time."
+        )
+      );
     } finally {
       setIsLoading(false);
     }
-  }
+  };
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
       <ConditionalRender
@@ -171,28 +183,28 @@ const SettleBalance = ({ history, match, groupId, data = {}, afterExpenseAdded }
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <InlineStyleFlexbox justifyContent="flex-start" fontWeight="600" fontSize="0.9rem">
-                <ImgInlineStyle
-                  src={arrowBlackColor}
-                  width={23}
-                  height={23}
-                  cursor="pointer"
-                  onClick={() => setView(DEFAULT_VIEW)}
-                />
-                Go back
+            <InlineStyleFlexbox
+              justifyContent="flex-start"
+              fontWeight="600"
+              fontSize="0.9rem"
+            >
+              <ImgInlineStyle
+                src={arrowBlackColor}
+                width={23}
+                height={23}
+                cursor="pointer"
+                onClick={() => setView(DEFAULT_VIEW)}
+              />
+              Go back
             </InlineStyleFlexbox>
           </Grid>
-           <Grid item xs={12}>
-            <Typography>
-              {SETTLE_BALANCES[PAYMENT_METHOD].labelText}
-            </Typography>
+          <Grid item xs={12}>
+            <Typography>{SETTLE_BALANCES[PAYMENT_METHOD].labelText}</Typography>
             <ReactHookSearchWithSelect
               variant="outlined"
               fullWidth
               autoFocus
-              autoComplete={
-                SETTLE_BALANCES[PAYMENT_METHOD].autocomplete
-              }
+              autoComplete={SETTLE_BALANCES[PAYMENT_METHOD].autocomplete}
               name={SETTLE_BALANCES[PAYMENT_METHOD].name}
               placeholder={SETTLE_BALANCES[PAYMENT_METHOD].placeholder}
               rules={SETTLE_BALANCES[PAYMENT_METHOD].validations}
@@ -206,16 +218,16 @@ const SettleBalance = ({ history, match, groupId, data = {}, afterExpenseAdded }
             />
           </Grid>
           <Grid item xs={12}>
-              <ButtonComponent
-                type="submit"
-                fullWidth
-                disabled={isLoading}
-                isLoading={isLoading}
-                onClick={handleSubmit(settleBalances)}
-              >
-                Settle
-              </ButtonComponent>
-            </Grid>
+            <ButtonComponent
+              type="submit"
+              fullWidth
+              disabled={isLoading}
+              isLoading={isLoading}
+              onClick={handleSubmit(settleBalances)}
+            >
+              Settle
+            </ButtonComponent>
+          </Grid>
         </Grid>
       </ConditionalRender>
     </Container>

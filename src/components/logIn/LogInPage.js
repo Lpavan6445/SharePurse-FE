@@ -12,22 +12,24 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { logInStyles } from './styles.js' ;
+import { logInStyles } from "./styles.js";
 import ReactHookFormInput from "../globalComponents/reactHookFormWrappedComponents/formInput.js";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import axiosInstance from "../../Base/api/axios.js";
 import ApiUrls from "../../Base/api/apiUrls.js";
-import {   
+import {
   PASS_WORD_KEY,
   LOGIN_FROM_DETAILS,
-  USER_NAME_KEY, 
+  USER_NAME_KEY,
 } from "./constants.js";
-import LogInServices from './services/logInService.js';
+import LogInServices from "./services/logInService.js";
 import cookies from "../../Base/cookie/cookie.js";
 import { AUTH_COOKIE_KEY } from "../../Base/cookie/cookieConstants.js";
 import ButtonComponent from "../globalComponents/index.js";
 import AppContextBase from "../../Base/appContext.js";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { formatedError } from "global/utils.js";
+import { isObject } from "lodash";
 
 function LogInPage({ history }) {
   const classes = logInStyles();
@@ -38,6 +40,7 @@ function LogInPage({ history }) {
     handleSubmit,
     watch,
     control,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -52,18 +55,29 @@ function LogInPage({ history }) {
       setLoader(true);
       const payload = {
         [USER_NAME_KEY]: logInData[USER_NAME_KEY].trim(),
-        [PASS_WORD_KEY]: logInData[PASS_WORD_KEY].trim()
-      }
+        [PASS_WORD_KEY]: logInData[PASS_WORD_KEY].trim(),
+      };
       const response = await axiosInstance.post(ApiUrls.LOG_IN, payload);
-     
+
       const { token, userData } = response.data;
       cookies.set(AUTH_COOKIE_KEY, token);
-      setUserData(userData);
+
       await getUserMetaData();
       history.push(AppUrls.HOME_PAGE);
     } catch (err) {
       console.error(err.message || err);
-      toast.success(err.message || 'Failed to Login User');
+      if (err?.response?.data?.error_type == "INVALID_USER_NAME_PASSWORD") {
+        return toast.error("Invalid username or password");
+      }
+      toast.error(formatedError(err, "Failed to Login User"));
+      if (err?.response?.data) {
+        if (isObject(err.response.data)) {
+          Object.entries(err.response.data || {}).map(([key, val]) => {
+            const formError = { type: "server", message: val[0] };
+            setError(key, formError);
+          });
+        }
+      }
     } finally {
       setLoader(false);
     }
@@ -120,10 +134,15 @@ function LogInPage({ history }) {
           >
             Log In
           </ButtonComponent>
-          <Grid item xs={12} justifyContent="flex-end" style={{ marginTop: '0.7rem', textAlign: 'right' }}>
+          <Grid
+            item
+            xs={12}
+            justifyContent="flex-end"
+            style={{ marginTop: "0.7rem", textAlign: "right" }}
+          >
             <Link to={AppUrls.SIGN_UP} variant="body2">
-                Create Account ? Sign Up
-              </Link>
+              Create Account ? Sign Up
+            </Link>
           </Grid>
         </form>
       </div>

@@ -34,16 +34,19 @@ import cookies from "../../Base/cookie/cookie.js";
 import AppContextBase from "../../Base/appContext.js";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/material";
+import { formatedError } from "global/utils.js";
+import { isObject } from "lodash";
 
 function SignUpPage({ history }) {
   const classes = signUpStyles();
-  const { setUserData, userData } = useContext(AppContextBase);
+  const { setUserData, userData, getUserMetaData } = useContext(AppContextBase);
   const [isLoading, setLoader] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     control,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -56,15 +59,27 @@ function SignUpPage({ history }) {
 
   const signUp = async (signUpData = {}) => {
     try {
+      setLoader(true);
       const response = await axiosInstance.post(ApiUrls.SIGN_UP, signUpData);
-      const { token, userData } = response;
-
-      setUserData(userData);
+      const { token, userData } = response.data;
       cookies.set(AUTH_COOKIE_KEY, token);
+
+      await getUserMetaData();
       history.push(AppUrls.HOME_PAGE);
     } catch (err) {
       console.error(err.response?.error || err.message || err);
-      toast.error(err.message || "Failed to Sign Up User");
+      if (err?.response?.data) {
+        if (isObject(err.response.data)) {
+          if (Object.entries(err.response.data || {}).length) {
+            Object.entries(err.response.data || {}).map(([key, val]) => {
+              const formError = { type: "server", message: val[0] };
+              setError(key, formError);
+            });
+            return;
+          }
+        }
+      }
+      toast.error(formatedError(err, "Failed to Sign Up User"));
     } finally {
       setLoader(false);
     }
@@ -80,89 +95,98 @@ function SignUpPage({ history }) {
           Sign up
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit(signUp)}>
-        <Stack>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <ReactHookFormInput
-                variant="outlined"
-                fullWidth
-                autoFocus
-                autoComplete={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].autocomplete}
-                name={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].autocomplete}
-                label={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].labelText}
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ReactHookFormInput
-                variant="outlined"
-                fullWidth
-                autoComplete={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
-                name={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
-                label={SIGN_UP_FROM_DETAILS[FIRSR_NAME].labelText}
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ReactHookFormInput
-                variant="outlined"
-                fullWidth
-                autoComplete={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
-                name={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
-                label={SIGN_UP_FROM_DETAILS[LAST_NAME].labelText}
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ReactHookFormInput
-                variant="outlined"
-                fullWidth
-                autoComplete={SIGN_UP_FROM_DETAILS[EMAIL_KEY].autocomplete}
-                name={SIGN_UP_FROM_DETAILS[EMAIL_KEY].name}
-                label={SIGN_UP_FROM_DETAILS[EMAIL_KEY].labelText}
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ReactHookFormInput
-                variant="outlined"
-                fullWidth
-                type="password"
-                autoComplete={SIGN_UP_FROM_DETAILS[PASS_WORD_KEY].autocomplete}
-                name={SIGN_UP_FROM_DETAILS[PASS_WORD_KEY].name}
-                label={SIGN_UP_FROM_DETAILS[PASS_WORD_KEY].labelText}
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            {/* // TODO @P1: Add this confirmation Checkbox later */}
-            {/* <Grid item xs={12}>
+          <Stack>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <ReactHookFormInput
+                  variant="outlined"
+                  fullWidth
+                  autoFocus
+                  autoComplete={
+                    SIGN_UP_FROM_DETAILS[USER_NAME_KEY].autocomplete
+                  }
+                  name={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].autocomplete}
+                  label={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].labelText}
+                  control={control}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ReactHookFormInput
+                  variant="outlined"
+                  fullWidth
+                  autoComplete={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
+                  name={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
+                  label={SIGN_UP_FROM_DETAILS[FIRSR_NAME].labelText}
+                  control={control}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ReactHookFormInput
+                  variant="outlined"
+                  fullWidth
+                  autoComplete={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
+                  name={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
+                  label={SIGN_UP_FROM_DETAILS[LAST_NAME].labelText}
+                  control={control}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ReactHookFormInput
+                  variant="outlined"
+                  fullWidth
+                  autoComplete={SIGN_UP_FROM_DETAILS[EMAIL_KEY].autocomplete}
+                  name={SIGN_UP_FROM_DETAILS[EMAIL_KEY].name}
+                  label={SIGN_UP_FROM_DETAILS[EMAIL_KEY].labelText}
+                  control={control}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ReactHookFormInput
+                  variant="outlined"
+                  fullWidth
+                  type="password"
+                  autoComplete={
+                    SIGN_UP_FROM_DETAILS[PASS_WORD_KEY].autocomplete
+                  }
+                  name={SIGN_UP_FROM_DETAILS[PASS_WORD_KEY].name}
+                  label={SIGN_UP_FROM_DETAILS[PASS_WORD_KEY].labelText}
+                  control={control}
+                  errors={errors}
+                />
+              </Grid>
+              {/* // TODO @P1: Add this confirmation Checkbox later */}
+              {/* <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid> */}
-            <Grid item xs={12}>
-              <ButtonComponent
-                fullWidth
-                type="submit"
-                className={classes.submit}
-                isLoading={isLoading}
+              <Grid item xs={12}>
+                <ButtonComponent
+                  fullWidth
+                  type="submit"
+                  className={classes.submit}
+                  isLoading={isLoading}
+                >
+                  Sign Up
+                </ButtonComponent>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                justifyContent="flex-end"
+                style={{ marginTop: "0.7rem", textAlign: "right" }}
               >
-                Sign Up
-              </ButtonComponent>
+                <Link to={AppUrls.LOG_IN} variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item xs={12} justifyContent="flex-end" style={{ marginTop: '0.7rem', textAlign: 'right' }}>
-              <Link to={AppUrls.LOG_IN} variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </Stack>
+          </Stack>
         </form>
       </div>
     </Container>
