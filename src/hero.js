@@ -16,7 +16,7 @@ export default function Wrapper({ children }) {
         width: "100%",
         backgroundSize: "100% 40%",
         backgroundRepeat: "no-repeat",
-        backgroundImage: 'linear-gradient(180deg, #CEE5FD, #FFF)',
+        // backgroundImage: 'linear-gradient(180deg, #CEE5FD, #FFF)',
         minHeight: '100vh'
       })}
     >
@@ -25,7 +25,7 @@ export default function Wrapper({ children }) {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          pt: { xs: 14, sm: 20 },
+          pt: { xs: 14, sm: 18 },
           pb: { xs: 8, sm: 12 },
         }}
       >

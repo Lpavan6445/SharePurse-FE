@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -13,7 +12,10 @@ import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppContextBase from "./Base/appContext";
 import AppUrls from "./Base/route/appUrls";
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
+// import { 
+//   Drawer,
+//   MenuItem, Button, AppBar, makeStyles, Box, Container, Toolbar, Divider, Typography } from "@material-ui/core";
 // import ToggleColorMode from './ToggleColorMode';
 
 const logoStyle = {
@@ -29,7 +31,7 @@ const styles = makeStyles((theme) => ({
     justifyContent: "space-between",
     flexShrink: 0,
     borderRadius: "999px",
-    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     backdropFilter: "blur(24px)",
     maxHeight: 40,
     border: "1px solid",
@@ -81,7 +83,7 @@ function AppAppBar({ history }) {
                 style={logoStyle}
                 alt="logo of sitemark"
               /> */}
-              <Typography style={logoStyle} color="text.primary">
+              <Typography style={logoStyle} color="text.primary" sx={{ paddingLeft: '1rem' }}>
                 Share Purse
               </Typography>
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -122,8 +124,8 @@ function AppAppBar({ history }) {
                 color="primary"
                 variant="contained"
                 size="small"
-                component="a"
-                target="_blank"
+                // component="a"
+                // target="_blank"
                 onClick={logOutUser}
               >
                 Log Out

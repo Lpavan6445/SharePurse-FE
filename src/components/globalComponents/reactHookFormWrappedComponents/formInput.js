@@ -11,13 +11,6 @@ import { Controller, useFormContext } from 'react-hook-form';
     }
   }
 */
-const styles = makeStyles((theme) => ({
-	inputStyles: {
-		'& .MuiOutlinedInput-input': {
-			padding: '0.7rem'
-		}
-	}
-}))
 const ReactHookFormInput = ({
 	name = '',
 	rules = {},
@@ -25,7 +18,6 @@ const ReactHookFormInput = ({
 	control,
 	...otherProps
 }) => {
-	const classes = styles();
 	return (
 		<Controller
 			control={control}
@@ -38,7 +30,6 @@ const ReactHookFormInput = ({
 					error={!!errors[name]}
 					helperText={errors[name] ? errors[name].message : ''}
 					size="medium"
-					className={classes.inputStyles}
 					{...otherProps}
 					color="text.primary"
 				/>

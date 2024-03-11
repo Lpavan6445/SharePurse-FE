@@ -16,6 +16,7 @@ const ReactHookFormUploadFiles = ({
 	rules = {},
 	errors = {},
 	control,
+	allowedTypes = [],
 	// setValue,
 	...otherProps
 }) => {
@@ -34,8 +35,19 @@ const ReactHookFormUploadFiles = ({
 						{...field}
 						value={value}
 						onChange={(e) => {
-							setValue(e.target.value);
-							field.onChange(e.target.files);
+							const value = e.target.value;
+							const files = e.target.files;
+							if (allowedTypes.length) {
+								if (!allowedTypes.includes(files?.[0]?.type)) {
+									alert('Please select a valid JPG or PNG image.');
+									setValue('');
+									field.onChange('')
+									return 
+								} 
+							} 
+							setValue(value);
+							field.onChange(files);
+							
 						}}
 						error={!!errors[name]}
 						helperText={errors[name] ? errors[name].message : ''}

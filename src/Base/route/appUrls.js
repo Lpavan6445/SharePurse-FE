@@ -1,3 +1,4 @@
+const BASE = '';
 const LOG_IN = '/login/';
 const SIGN_UP = '/signup/';
 
@@ -14,6 +15,7 @@ const VIEW_GROUP = id => `${GROUP_BASE}/${id}`;
 const ADD_EXPENSES = id => `${VIEW_GROUP(id)}/add_expenses`;
 const VIEW_EXPENSE = (id, expenseId) => `${GROUP_BASE}/${id}/${expenseId}`;
 const EDIT_EXPENSE = (id, expenseId) => `${GROUP_BASE}/${id}/${expenseId}/edit`;
+const PERSONAL_EXPENSE = `/expenses/personal`;
 
 const AppUrls = {
     LOG_IN,
@@ -27,6 +29,7 @@ const AppUrls = {
     ADD_EXPENSES,
     VIEW_EXPENSE,
     EDIT_EXPENSE,
+    PERSONAL_EXPENSE,
 }
 
 export default AppUrls;

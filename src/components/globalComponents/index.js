@@ -15,7 +15,7 @@ import ConditionalRender from "./conditionalRender";
         <Button
             type={type}
             variant="contained"
-            color={color}
+            // color={color}
             {...extraButtonProps}
         >
             <InlineStyleFlexbox gap="1.5rem">

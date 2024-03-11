@@ -3,13 +3,16 @@ import AppContextBase from '../../Base/appContext';
 import ButtonComponent from '../globalComponents';
 import PrimarySearchAppBar from '../Appbar/appbar';
 import { Breadcrumbs, Container, Link, Typography } from '@material-ui/core';
+import { PageHeader } from '../globalComponents/commonComponents';
 
 const Homepage = () => {
   const { setUserData, userData, logOutUser } = useContext(AppContextBase);
 
   return (
     <>
-        Homepage
+      <PageHeader>
+        Dashboard
+      </PageHeader>
     </>
   )
 }
