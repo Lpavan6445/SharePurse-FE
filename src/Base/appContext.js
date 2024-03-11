@@ -8,7 +8,6 @@ import { ThemeProvider } from "@material-ui/core";
 import { formatNumberWithCurrency } from "global/utils";
 import { formatedError } from "global/utils";
 import { toast } from "react-toastify";
-import { isEqual } from "lodash";
 
 const AppContextBase = createContext({});
 const AppContext = ({ children }) => {

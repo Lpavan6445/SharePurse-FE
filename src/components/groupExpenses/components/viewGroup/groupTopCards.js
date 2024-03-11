@@ -123,66 +123,66 @@ const GroupTopCards = ({
           </InlineStylecDiv>
         </Box>
       </CustomCardComponent>
-      <CustomCardComponent className={classes.cardStyles} data-aos="flip-left">
-        <Box className={classes.cardTextWrapper}>
-          <InlineStylecDiv
-            fontWeight="bold"
-            fontSize="2.5rem"
-            color={theme.moduleColurs.greencolor}
-          >
-            {userUtils(
-              groupBalanceData.total_owed,
-              "formateNumberWithCurrency"
-            )}
-          </InlineStylecDiv>
-          <InlineStylecDiv fontSize="1.2rem" color="gray">
-            You get back
-          </InlineStylecDiv>
-          <LightTooltip title={getBackDetails()}>
-            <span>
-              <ImgInlineStyle
-                src={linesIcons}
-                width={20}
-                height={20}
-                position="absolute"
-                bottom="11px"
-                right="11px"
-                cursor="pointer"
-              />
-            </span>
-          </LightTooltip>
-        </Box>
-      </CustomCardComponent>
-      <CustomCardComponent className={classes.cardStyles} data-aos="flip-right">
-        <Box className={classes.cardTextWrapper}>
-          <InlineStylecDiv
-            fontWeight="bold"
-            fontSize="2.5rem"
-            color={theme.moduleColurs.redcolor}
-          >
-            {userUtils(
-              -(groupBalanceData.total_borrowed || -0),
-              "formateNumberWithCurrency"
-            )}
-          </InlineStylecDiv>
-          <InlineStylecDiv fontSize="1.2rem" color="gray">
-            You Owe
-          </InlineStylecDiv>
-          <LightTooltip title={getOweDetails()}>
-            <span>
-              <ImgInlineStyle
-                src={linesIcons}
-                width={20}
-                height={20}
-                position="absolute"
-                bottom="11px"
-                right="11px"
-                cursor="pointer"
-              />
-            </span>
-          </LightTooltip>
-        </Box>
-      </CustomCardComponent>
+      <LightTooltip title={getBackDetails()}>
+        <CustomCardComponent className={classes.cardStyles} data-aos="flip-left">
+          <Box className={classes.cardTextWrapper}>
+            <InlineStylecDiv
+              fontWeight="bold"
+              fontSize="2.5rem"
+              color={theme.moduleColurs.greencolor}
+            >
+              {userUtils(
+                groupBalanceData.total_owed,
+                "formateNumberWithCurrency"
+              )}
+            </InlineStylecDiv>
+            <InlineStylecDiv fontSize="1.2rem" color="gray">
+              You get back
+            </InlineStylecDiv>
+              <span>
+                <ImgInlineStyle
+                  src={linesIcons}
+                  width={20}
+                  height={20}
+                  position="absolute"
+                  bottom="11px"
+                  right="11px"
+                  cursor="pointer"
+                />
+              </span>
+          </Box>
+        </CustomCardComponent>
+      </LightTooltip>
+      <LightTooltip title={getOweDetails()}>
+        <CustomCardComponent className={classes.cardStyles} data-aos="flip-right">
+          <Box className={classes.cardTextWrapper}>
+            <InlineStylecDiv
+              fontWeight="bold"
+              fontSize="2.5rem"
+              color={theme.moduleColurs.redcolor}
+            >
+              {userUtils(
+                -(groupBalanceData.total_borrowed || -0),
+                "formateNumberWithCurrency"
+              )}
+            </InlineStylecDiv>
+            <InlineStylecDiv fontSize="1.2rem" color="gray">
+              You Owe
+            </InlineStylecDiv>
+              <span>
+                <ImgInlineStyle
+                  src={linesIcons}
+                  width={20}
+                  height={20}
+                  position="absolute"
+                  bottom="11px"
+                  right="11px"
+                  cursor="pointer"
+                />
+              </span>
+          </Box>
+        </CustomCardComponent>
+      </LightTooltip>
       <CustomCardComponent className={classes.cardStyles} data-aos="flip-right">
         <Box className={classes.cardTextWrapper}>
           <InlineStylecDiv fontWeight="bold" fontSize="2.5rem">

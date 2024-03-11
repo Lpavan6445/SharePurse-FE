@@ -106,9 +106,10 @@ const SettleBalance = ({
       data: { payee: userID },
     });
   };
-
   const showListOfBalanceSettledList = useCallback(
-    () => (
+    () => {
+      const owedBalances = Object.entries(data || {})?.filter(([userID, balance], index) => !(balance > 0));
+      return (
       <InlineStyleFlexbox
         flexDirection="column"
         alignItems="space-start"
@@ -116,14 +117,14 @@ const SettleBalance = ({
         width="100%"
       >
         <ConditionalRender
-          shouldRender={Object.entries(data || {}).length}
+          shouldRender={owedBalances.length}
           elseShowThis={
             <Typography variant="body2" align="center">
               No Pending Balances to Settle
             </Typography>
           }
         >
-          {Object.entries(data || {})?.map(([userID, balance], index) => {
+          {owedBalances?.map(([userID, balance], index) => {
             if (balance > 0) return "";
             return (
               <InlineStyleFlexbox justifyContent="space-between">
@@ -147,7 +148,7 @@ const SettleBalance = ({
           })}
         </ConditionalRender>
       </InlineStyleFlexbox>
-    ),
+    )},
     [data]
   );
 

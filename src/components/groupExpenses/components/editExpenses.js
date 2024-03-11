@@ -41,13 +41,13 @@ const styles = makeStyles((theme) => ({
   splitMoneyWith: {
     height: "200px",
     overflow: "scroll",
-    width: "100%",
+    // width: "100%",
     marginBottom: "1rem",
     border: "1px solid gray",
     padding: "1rem 1rem 0 1rem",
 
     display: "flex",
-    gap: "1rem",
+    // gap: "1rem",
     flexDirection: "column",
     position: "relative",
     borderRadius: "0.5rem",
@@ -250,61 +250,63 @@ const EditExpenses = ({ defaultValues, match, afterExpenseAdded }) => {
               type="number"
             />
           </Grid>
-          <InlineStylecDiv width="100%" padding="0 0.5rem">
-            <Typography>Split with *</Typography>
-            <div className={classes.splitMoneyWith}>
-              {defaultValues.participants?.map((user) => {
-                return (
-                  <>
-                    <InlineStyleFlexbox
-                      key={`uniq_${user.id}`}
-                      justifyContent="space-between"
-                      gap="1rem"
-                      fontSize="1rem"
-                    >
-                      <InlineStylecDiv width="50%">
-                        {user.first_name} {user.last_name}
-                      </InlineStylecDiv>
-                      <InlineStylecDiv width="50%">
-                        <ReactHookFormInput
-                          key={user.name}
-                          control={control}
-                          errors={errors}
-                          name={user.name}
-                          placeholder={0}
-                          id="standard-number"
-                          variant="outlined"
-                          fullWidth
-                          autoFocus
-                          rules={{
-                            validate: (value) => {
-                              if (!value) {
+          <Grid item xs={12}>
+            <InlineStylecDiv padding="0 0.5rem">
+              <Typography>Split with *</Typography>
+              <div className={classes.splitMoneyWith}>
+                {defaultValues.participants?.map((user) => {
+                  return (
+                    <>
+                      <InlineStyleFlexbox
+                        key={`uniq_${user.id}`}
+                        justifyContent="space-between"
+                        gap="1rem"
+                        fontSize="1rem"
+                      >
+                        <InlineStylecDiv width="50%">
+                          {user.first_name} {user.last_name}
+                        </InlineStylecDiv>
+                        <InlineStylecDiv width="50%">
+                          <ReactHookFormInput
+                            key={user.name}
+                            control={control}
+                            errors={errors}
+                            name={user.name}
+                            placeholder={0}
+                            id="standard-number"
+                            variant="outlined"
+                            fullWidth
+                            autoFocus
+                            rules={{
+                              validate: (value) => {
+                                if (!value) {
+                                  return undefined;
+                                }
+                                // check is value is number
+                                if (isNaN(value)) {
+                                  return "Amount should be number";
+                                }
+
+                                if (value < 0) {
+                                  return "Amount should be greater than 0";
+                                }
+
                                 return undefined;
-                              }
-                              // check is value is number
-                              if (isNaN(value)) {
-                                return "Amount should be number";
-                              }
-
-                              if (value < 0) {
-                                return "Amount should be greater than 0";
-                              }
-
-                              return undefined;
-                            },
-                          }}
-                          type="number"
-                          disabled={!watch(TOTAL_AMOUNT_ADD_EXPENSES_DK)}
-                        />
-                      </InlineStylecDiv>
-                    </InlineStyleFlexbox>
-                    <hr />
-                  </>
-                );
-              })}
-              <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
-            </div>
-          </InlineStylecDiv>
+                              },
+                            }}
+                            type="number"
+                            disabled={!watch(TOTAL_AMOUNT_ADD_EXPENSES_DK)}
+                          />
+                        </InlineStylecDiv>
+                      </InlineStyleFlexbox>
+                      <hr />
+                    </>
+                  );
+                })}
+                <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
+              </div>
+            </InlineStylecDiv>
+          </Grid>
           <Grid item xs={12}>
             <ButtonComponent
               type="submit"

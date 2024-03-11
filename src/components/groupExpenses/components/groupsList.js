@@ -62,9 +62,10 @@ const styles = makeStyles((theme) => ({
 
     [theme.breakpoints.down("sm")]: {
       width: "100%",
-      maxWidth: '95vw',
+      maxWidth: "95vw",
       height: "151px",
     },
+    position: "relative",
   },
   addGroupButton: {
     flexDirection: "column",
@@ -73,7 +74,7 @@ const styles = makeStyles((theme) => ({
     width: "200px",
     padding: "1.5rem",
     height: "209px",
-  }
+  },
 }));
 const GroupsList = ({ history, match }) => {
   const classes = styles();

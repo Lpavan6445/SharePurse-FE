@@ -11,6 +11,7 @@ const GROUP_BASE = groupId => `${AUTH_BASE}/group/${groupId}`;
 const CREATE_GROUP = `${AUTH_BASE}/group/create/`;
 const EDIT_GROUP_DATA = groupId => `${AUTH_BASE}/group/edit/${groupId}/`;
 const GET_GROUP_METADATA = groupId => `${GROUP_BASE(groupId)}/metadata/`;
+const DELETE_GROUPE = groupId => `${GROUP_BASE(groupId)}/delete/`;
 const ADD_MEMEBERS_TO_GROUP = groupId => `${GROUP_BASE(groupId)}/add_members/`;
 
 const TRANSACTION_BASE = `${AUTH_BASE}/transaction`;
@@ -36,6 +37,7 @@ const ApiUrls = {
     EDIT_GROUP_EXPENSES,
     SETTLE_BALANCES,
     EDIT_GROUP_DATA,
+    DELETE_GROUPE,
 };
 
 export default ApiUrls;

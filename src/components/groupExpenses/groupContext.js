@@ -14,7 +14,8 @@ const GroupContext = ({ children, match }) => {
       activateLoader && setLoading(true);
       const res = await axiosInstance.get(ApiUrls.GET_GROUP_METADATA(groupId));
       const formatedUsersData = res.data.group_members.reduce((acc, curr) => {
-        acc[curr.id] = curr;
+        acc[curr.id] = { ...curr, ...curr.user}
+        delete curr.user
         return acc;
       }, {});
       const data = {

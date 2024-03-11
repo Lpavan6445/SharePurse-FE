@@ -157,7 +157,7 @@ const FixedSidebar = ({ history, children }) => {
     }
   ]
 
-  const drawer = (
+  const drawer = (afterOnClick = ()=>{}) => (
     <>
       <Box className={classes.sidebarLogoWrapper}>
         <div className={classes.sidebarLogo}>
@@ -177,6 +177,7 @@ const FixedSidebar = ({ history, children }) => {
                           button 
                           onClick={() => {
                               history.push(menu.path)
+                              afterOnClick();
                               // handleDrawerToggle();
                           }}
                       >
@@ -192,7 +193,13 @@ const FixedSidebar = ({ history, children }) => {
           }
         </List>
         <List className={classes.list}>
-          <ListItem button onClick={() => setSettingPage(true)}>
+          <ListItem 
+            button 
+            onClick={() => {
+              setSettingPage(true);
+              afterOnClick();
+            }}
+          >
             <MenuItemCustom>
               <Avatar
                 alt={""}
@@ -233,7 +240,7 @@ const FixedSidebar = ({ history, children }) => {
             paper: classes.drawerPaper,
           }}
         >
-          {drawer}
+          {drawer(handleDrawerToggle)}
         </Drawer>
       </Hidden>
       <Hidden xsDown implementation="css">
@@ -244,7 +251,7 @@ const FixedSidebar = ({ history, children }) => {
             paper: classes.drawerPaper,
           }}
         >
-          {drawer}
+          {drawer()}
         </Drawer>
       </Hidden>
       <main className={classes.content}>

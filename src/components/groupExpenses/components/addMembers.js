@@ -60,13 +60,6 @@ const AddMembers = ({
     }
   }
 
-  const filterUsersByGroupMemebers = users.filter((user) => {
-    const userId = user.id;
-    if (!groupMembers.includes(userId.toString())) {
-      return true
-    }
-    return false
-  });
   return (
     <InlineStylecDiv padding="1rem">
       <Grid container spacing={2}>
@@ -88,7 +81,7 @@ const AddMembers = ({
             rules={ADD_MEMBERS.validations}
             control={control}
             errors={errors}
-            options={filterUsersByGroupMemebers || []}
+            options={users || []}
             optionUiText="first_name"
             optionValueKey="id"
             multiple={true}

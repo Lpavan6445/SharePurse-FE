@@ -27,16 +27,20 @@ import { toast } from "react-toastify";
 import { formatedError } from "../../../global/utils";
 import AppUrls from "../../../Base/route/appUrls";
 import AppContextBase from "../../../Base/appContext";
+import { cloneDeep } from "lodash";
 
 const styles = makeStyles((theme) => ({
   container: {
-    padding: '1rem',
-    '& .MuiOutlinedInput-input': {
-      backgroundColor: 'unset',
+    [theme.breakpoints.up('sm')]: {
+        width: '405px'
     },
-    '& .MuiInputBase-root':{
-      // boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'
-    }
+  //   padding: '1rem',
+  //   '& .MuiOutlinedInput-input': {
+  //     backgroundColor: 'unset',
+  //   },
+  //   '& .MuiInputBase-root':{
+  //     // boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'
+  //   }
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -49,9 +53,9 @@ const styles = makeStyles((theme) => ({
     marginBottom: "1rem",
     border: "1px solid gray",
     padding: "1rem 1rem 0 1rem",
-    background: 'white',
+
     display: "flex",
-    gap: "1rem",
+    // gap: "1rem",
     flexDirection: "column",
     position: "relative",
     borderRadius: "0.5rem",
@@ -148,6 +152,7 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
     );
   };
   const categoryOptions = Object.entries(userMetaData.category_choices || {}).map(([key, value]) => ({ id: key, title: value }));
+  const clonedGroupMembersData = cloneDeep(groupMetaData?.group_members);
   return (
     <>
       <Container component="main" maxWidth="sm" className={classes.container}>
@@ -250,63 +255,65 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
               type="number"
             />
           </Grid>
-          <InlineStylecDiv width="100%" padding="0 0.5rem">
-            <Typography>Split with *</Typography>
-            <div className={classes.splitMoneyWith}>
-              {Object.values(groupMetaData?.group_members || {})?.map(
-                (user) => {
-                  return (
-                    <>
-                      <InlineStyleFlexbox
-                        key={`uniq_${user.id}`}
-                        justifyContent="space-between"
-                        gap="1rem"
-                        fontSize="1rem"
-                      >
-                        <InlineStylecDiv width="50%">
-                          {user.first_name} {user.last_name}
-                        </InlineStylecDiv>
-                        <InlineStylecDiv width="50%">
-                          <ReactHookFormInput
-                            key={`${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`}
-                            control={control}
-                            errors={errors}
-                            name={`${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`}
-                            placeholder={0}
-                            id="standard-number"
-                            variant="outlined"
-                            fullWidth
-                            autoFocus
-                            rules={{
-                              validate: (value) => {
-                                if (!value) {
+          <Grid item xs={12}>
+            <InlineStylecDiv padding="0 0.5rem">
+              <Typography>Split with *</Typography>
+              <div className={classes.splitMoneyWith}>
+                {Object.values(clonedGroupMembersData || {})?.map(
+                  (user) => {
+                    return (
+                      <>
+                        <InlineStyleFlexbox
+                          key={`uniq_${user.id}`}
+                          justifyContent="space-between"
+                          gap="1rem"
+                          fontSize="1rem"
+                        >
+                          <InlineStylecDiv width="50%">
+                            {user.first_name} {user.last_name}
+                          </InlineStylecDiv>
+                          <InlineStylecDiv width="50%">
+                            <ReactHookFormInput
+                              key={`${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`}
+                              control={control}
+                              errors={errors}
+                              name={`${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`}
+                              placeholder={0}
+                              id="standard-number"
+                              variant="outlined"
+                              fullWidth
+                              autoFocus
+                              rules={{
+                                validate: (value) => {
+                                  if (!value) {
+                                    return undefined;
+                                  }
+                                  // check is value is number
+                                  if (isNaN(value)) {
+                                    return "Amount should be number";
+                                  }
+
+                                  if (value < 0) {
+                                    return "Amount should be greater than 0";
+                                  }
+
                                   return undefined;
-                                }
-                                // check is value is number
-                                if (isNaN(value)) {
-                                  return "Amount should be number";
-                                }
-
-                                if (value < 0) {
-                                  return "Amount should be greater than 0";
-                                }
-
-                                return undefined;
-                              },
-                            }}
-                            type="number"
-                            disabled={!watch(TOTAL_AMOUNT_ADD_EXPENSES_DK)}
-                          />
-                        </InlineStylecDiv>
-                      </InlineStyleFlexbox>
-                      <hr />
-                    </>
-                  );
-                }
-              )}
-              <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
-            </div>
-          </InlineStylecDiv>
+                                },
+                              }}
+                              type="number"
+                              disabled={!watch(TOTAL_AMOUNT_ADD_EXPENSES_DK)}
+                            />
+                          </InlineStylecDiv>
+                        </InlineStyleFlexbox>
+                        <hr />
+                      </>
+                    );
+                  }
+                )}
+                <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
+              </div>
+            </InlineStylecDiv>
+          </Grid>
           <Grid item xs={12}>
             <ButtonComponent
               type="submit"

@@ -24,12 +24,17 @@ const styles = makeStyles(theme => ({
 		top: 0,
 		background: 'white',
 		zIndex: '10',
-		'& .closeIcon': {
-			position: 'absolute',
-			top: '5px',
-			right: '6px',
-			cursor: 'pointer',
-		},
+	},
+	'closeIcon': {
+		position: 'absolute',
+		top: '5px',
+		right: '6px',
+		cursor: 'pointer',
+
+		position: 'absolute',
+		top: '5px',
+		zIndex: '13',
+		right: '6px'
 	},
 }));
 
@@ -71,9 +76,12 @@ const CenteredModal = ({
 				<ConditionalRender shouldRender={!!showTitle}>
 					<div className={classes.title}>
 						{title}
-						<CloseIcon className="closeIcon" onClick={_ => onClose(false)} />
 					</div>
 				</ConditionalRender>
+				<CloseIcon 
+					className={classes.closeIcon}
+					onClick={_ => onClose(false)} 
+				/>
 				{/* For Children you have to specify width and height  */}
 				{children}
 			</Paper>

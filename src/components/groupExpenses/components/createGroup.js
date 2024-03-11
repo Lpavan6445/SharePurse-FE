@@ -196,7 +196,6 @@ const CreateEditGroup = ({
             <ReactHookFormUploadFiles
               variant="outlined"
               fullWidth
-              autoFocus
               autoComplete={CREATE_GROUP[GROUP_IMAGE].autocomplete}
               name={GROUP_IMAGE}
               placeholder={CREATE_GROUP[GROUP_IMAGE].placeholder}
@@ -216,7 +215,6 @@ const CreateEditGroup = ({
           <ReactHookFormInput
             variant="outlined"
             fullWidth
-            autoFocus
             autoComplete={CREATE_GROUP[GROUP_NAME].autocomplete}
             name={CREATE_GROUP[GROUP_NAME].name}
             placeholder={CREATE_GROUP[GROUP_NAME].placeholder}
@@ -234,7 +232,7 @@ const CreateEditGroup = ({
             isLoading={isLoading}
             disabled={isLoading}
           >
-            {isInEditMode ? "Create Group" : "Update Group"}
+            {!isInEditMode ? "Create Group" : "Update Group"}
           </ButtonComponent>
         </Grid>
       </Grid>

@@ -45,3 +45,20 @@ export const ImgInlineStyle = ({
 		/>
 	);
 };
+
+export const DividerInlineStyle = ({
+	...extraStyles
+}) => {
+	return (
+		<hr 
+			style={{
+				border: 'none',
+				height: '1px',
+				margin: '0',
+				flexShrink: '0',
+    			backgroundColor: 'rgba(0, 0, 0, 0.12)',
+				...extraStyles
+			}}
+		></hr>
+	)
+};

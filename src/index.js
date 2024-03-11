@@ -63,8 +63,8 @@ axiosInstance.interceptors.response.use(function (config) { // eslint-disable-li
     // When token fails, The below authorization error occurs
     // toast.error('User is not authorized to access');
     cookies.remove(AUTH_COOKIE_KEY)
+    window.location.reload();
   }
-
   return Promise.reject(error);
 });
 

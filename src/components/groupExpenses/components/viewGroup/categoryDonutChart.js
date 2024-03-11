@@ -48,7 +48,7 @@ const CategoryDonutChart = ({
       },
     },
     fill: {
-      colors: ["#F1DAC4", "#A29E9E", "#D3D0CB", "#B8C4D4", "#F3EFEF", "#6AD2FF", "#A3BFA8"],
+      colors: ['rgb(255, 69, 96)', 'rgb(0, 216, 182)', 'rgb(0, 143, 251)', 'rgb(254, 176, 25)', '#4CB140', '#5752D1', '#009596']
     },
     tooltip: {
       enabled: true,
