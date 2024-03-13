@@ -7,7 +7,7 @@ import axiosInstance from 'Base/api/axios';
 import { toast } from 'react-toastify';
 import cookies from 'Base/cookie/cookie';
 import { AUTH_COOKIE_KEY } from 'Base/cookie/cookieConstants';
-
+window.cookie = cookies;
 /**
    * Adds Interceptor to axios to add token in every request header
    */

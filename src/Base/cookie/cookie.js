@@ -14,7 +14,7 @@ function isIpv4Address(str = "") {
  * @param {String} value value of the cookie
  * @param {Date} [expiryDte] Date Object
  */
-function set(name, value, expiryDte, onDomain = true) {
+function set(name, value, expiryDte, onDomain = false) {
   let expires = "";
   let domain = "";
 
@@ -38,7 +38,7 @@ function set(name, value, expiryDte, onDomain = true) {
     }
   }
 
-  document.cookie = `${name}=${value}${expires}${domain}; path=/`;
+  window.document.cookie = `${name}=${value}${expires}${domain}; path=/`;
 }
 
 /**
@@ -78,7 +78,7 @@ function deleteAllCookies() {
   // The "expire" attribute of every cookie is
   // Set to "Thu, 01 Jan 1970 00:00:00 GMT"
   for (let i = 0; i < allCookies.length; i += 1) {
-    document.cookie = `${allCookies[i]}=;expires=${new Date(0).toUTCString()}`;
+    window.document.cookie = `${allCookies[i]}=;expires=${new Date(0).toUTCString()}`;
   }
 }
 
