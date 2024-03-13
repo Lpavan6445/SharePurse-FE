@@ -14,7 +14,7 @@ function isIpv4Address(str = "") {
  * @param {String} value value of the cookie
  * @param {Date} [expiryDte] Date Object
  */
-function set(name, value, expiryDte, onDomain = true) {
+function set(name, value, expiryDte, onDomain = false) {
   let expires = "";
   let domain = "";
 
@@ -88,5 +88,5 @@ const cookies = {
   get,
   remove,
 };
-
+window.cookie = cookies;
 export default cookies;
