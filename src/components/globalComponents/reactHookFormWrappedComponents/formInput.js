@@ -16,6 +16,7 @@ const ReactHookFormInput = ({
 	rules = {},
 	errors = {},
 	control,
+	afterChangeFun = () => {},
 	...otherProps
 }) => {
 	return (
@@ -27,6 +28,10 @@ const ReactHookFormInput = ({
 			render={({ field }) => (
 				<TextField
 					{...field}
+					onChange={e => {
+						field.onChange(e);
+						afterChangeFun(e);
+					}}
 					error={!!errors[name]}
 					helperText={errors[name] ? errors[name].message : ''}
 					size="medium"

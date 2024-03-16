@@ -25,6 +25,7 @@ import personalExpense from 'assets/personalExpense.svg';
 import AppContextBase from 'Base/appContext';
 import { getBeImgaeFullUrl } from 'global/utils';
 import CenteredModal from '../globalComponents/Modal';
+import CreateUpdateProfile from './createUpdateProfile';
 
 const drawerWidth = 280;
 const useStyles = makeStyles((theme) => ({
@@ -200,7 +201,7 @@ const FixedSidebar = ({ history, children }) => {
               afterOnClick();
             }}
           >
-            <MenuItemCustom>
+            <MenuItemCustom style={{ filter: 'unset' }}>
               <Avatar
                 alt={""}
                 src={getBeImgaeFullUrl(userData?.image)}
@@ -215,7 +216,7 @@ const FixedSidebar = ({ history, children }) => {
             </MenuItemCustom>
           </ListItem>
           <ListItem button onClick={logOutUser}>
-            <MenuItemCustom >
+            <MenuItemCustom style={{ filter: 'unset' }}>
               <ImgInlineStyle src={logout} altIcon='logutIcon' />
               <Typography>
                 Logout
@@ -269,14 +270,17 @@ const FixedSidebar = ({ history, children }) => {
       </Hidden>
       <CenteredModal
         isOpen={openSettingPage}
-        title="Create Group"
+        showTitle={false}
         onClose={() => setSettingPage(false)}
         width="fit-content"
         maxWidth="92%"
         height="fit-content"
         minHeight={240}
       > 
-        Settings
+        <CreateUpdateProfile 
+          defaultValues={{ ...userData, ...userData.user }}
+          afterCreateEditGroupClick={() => setSettingPage(false)}
+        />
       </CenteredModal>
     </div>
   );

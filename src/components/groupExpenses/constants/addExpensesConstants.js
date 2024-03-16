@@ -13,6 +13,7 @@ export const DESCRIPTION_ADD_EXPENSES_DK = 'description';
 export const CATEGORY_ADD_EXPENSES_DK = 'category';
 export const TOTAL_AMOUNT_ADD_EXPENSES_DK = 'total_amount';
 export const PAID_BY_ADD_EXPENSES_DK = 'paid_by';
+export const SPLIT_BY = 'split_by';
 
 export const ADD_EXPENSES_FORM = {
     [TITLE_ADD_EXPENSES_DK]: {
@@ -87,4 +88,24 @@ export const ADD_EXPENSES_FORM = {
 			},
         }
     },
+    [SPLIT_BY]: {
+        name: SPLIT_BY,
+        labelText: 'Split by',
+        placeholder: 'Split by',
+        autocomplete: 'paid_by',
+    },
 };
+
+export const SPLIT_EQUALLY = 'SPLIT_EQUALLY';
+export const SPLIT_UNEQUALLY = 'SPLIT_UNEQUALLY';
+
+export const SPLIT_TYPE_OPTIONS = {
+    [SPLIT_EQUALLY]: {
+        value: SPLIT_EQUALLY,
+        text: 'Split Equally',
+    },
+    [SPLIT_UNEQUALLY]: {
+        value: SPLIT_UNEQUALLY,
+        text: 'Split Unequally',
+    }
+}

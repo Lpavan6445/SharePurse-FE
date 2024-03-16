@@ -72,7 +72,6 @@ const AppContext = ({ children }) => {
      return utilsEnum[type] ? utilsEnum[type]() : number
   };
 
-  console.log(children, 'children')
   return (
     <AppContextBase.Provider
       value={{

@@ -105,7 +105,7 @@ function SignUpPage({ history }) {
                   autoComplete={
                     SIGN_UP_FROM_DETAILS[USER_NAME_KEY].autocomplete
                   }
-                  name={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].autocomplete}
+                  name={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].name}
                   label={SIGN_UP_FROM_DETAILS[USER_NAME_KEY].labelText}
                   control={control}
                   errors={errors}
@@ -116,7 +116,7 @@ function SignUpPage({ history }) {
                   variant="outlined"
                   fullWidth
                   autoComplete={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
-                  name={SIGN_UP_FROM_DETAILS[FIRSR_NAME].autocomplete}
+                  name={SIGN_UP_FROM_DETAILS[FIRSR_NAME].name}
                   label={SIGN_UP_FROM_DETAILS[FIRSR_NAME].labelText}
                   control={control}
                   errors={errors}
@@ -127,7 +127,7 @@ function SignUpPage({ history }) {
                   variant="outlined"
                   fullWidth
                   autoComplete={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
-                  name={SIGN_UP_FROM_DETAILS[LAST_NAME].autocomplete}
+                  name={SIGN_UP_FROM_DETAILS[LAST_NAME].name}
                   label={SIGN_UP_FROM_DETAILS[LAST_NAME].labelText}
                   control={control}
                   errors={errors}

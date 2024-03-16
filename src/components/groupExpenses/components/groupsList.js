@@ -22,7 +22,7 @@ import AppUrls from "../../../Base/route/appUrls";
 import AppContextBase from "../../../Base/appContext";
 import ButtonComponent from "../../globalComponents";
 import CenteredModal from "../../globalComponents/Modal";
-import CreateEditGroup from "./createGroup";
+import CreateEditGroup from "./createEditGroup";
 import {
   InlineStyleFlexbox,
   InlineStylecDiv,
@@ -129,6 +129,7 @@ const GroupsList = ({ history, match }) => {
 
   const afterCreatingGroup = async (groupId) => {
     history.push(AppUrls.VIEW_GROUP(groupId));
+    setCreateModal(false);
   };
 
   return (

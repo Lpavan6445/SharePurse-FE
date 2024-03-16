@@ -75,7 +75,7 @@ const GroupTopCards = ({
           if (balance < 0) return "";
           return (
             <InlineStylecDiv fontWeight="700" fontSize="1rem">
-              {userMetaData.users?.[key]?.first_name || key} owes you{" "}
+              {userMetaData.users?.[key]?.username || key} owes you{" "}
               <span style={{ color: theme.moduleColurs.greencolor }}>
                 {balance}
               </span>
@@ -97,7 +97,7 @@ const GroupTopCards = ({
           if (balance > 0) return "";
           return (
             <InlineStylecDiv fontWeight="700" fontSize="1rem">
-              You owe {userMetaData.users?.[key]?.first_name || key}{" "}
+              You owe {userMetaData.users?.[key]?.username || key}{" "}
               <span style={{ color: theme.moduleColurs.redcolor }}>
                 {balance}
               </span>

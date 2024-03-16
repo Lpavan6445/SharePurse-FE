@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	popper: {
-		height: '203px',
+		maxHeight: '203px',
 		'& .MuiAutocomplete-listbox': {
 			'& .MuiAutocomplete-option': {
 				borderBottom: '1px solid #80808042',
