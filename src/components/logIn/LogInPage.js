@@ -83,7 +83,7 @@ function LogInPage({ history }) {
     }
   };
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className={classes.logInContainerStyles}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>

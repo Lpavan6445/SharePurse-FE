@@ -20,6 +20,7 @@ const GET_GROUP_BALANCES= (groupId) => `${TRANSACTION_BASE}/get-individual-balan
 const ADD_GROUP_EXPENSES = groupId => `${TRANSACTION_BASE}/make/${groupId}/`;
 const EDIT_GROUP_EXPENSES = groupId => `${TRANSACTION_BASE}/edit/${groupId}/`;
 const SETTLE_BALANCES = groupId => `${TRANSACTION_BASE}/settle_up/${groupId}/`;
+const UPDATE_PROFILE = `${AUTH_BASE}/update_profile/`;
 
 const ApiUrls = {
     AUTH_BASE,
@@ -38,6 +39,7 @@ const ApiUrls = {
     SETTLE_BALANCES,
     EDIT_GROUP_DATA,
     DELETE_GROUPE,
+    UPDATE_PROFILE,
 };
 
 export default ApiUrls;

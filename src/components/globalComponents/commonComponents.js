@@ -1,4 +1,6 @@
-import { Box, Tooltip, withStyles } from "@material-ui/core";
+import { Avatar, Box, Tooltip, withStyles } from "@material-ui/core";
+import { InlineStyleFlexbox } from "./InlineStyledCommonComponents";
+import { getBeImgaeFullUrl } from "global/utils";
 
 export const PageHeader = withStyles((theme) => ({
    root: {
@@ -41,3 +43,37 @@ export const LightTooltip = withStyles((theme) => ({
    //   border: `1px solid ${theme.moduleColurs.globalcolor}`
    },
  }))(Tooltip);
+
+
+export const UserWithProfileImage = ({
+   altImage = '',
+   profileImage = '',
+   email = '',
+   userName = '',
+}) => {
+   return (
+      <InlineStyleFlexbox
+         justifyContent="flex-start"
+         gap="1rem"
+     >
+      <Avatar
+        alt={altImage}
+        src={getBeImgaeFullUrl(profileImage)}
+      />
+      <Tooltip title={email}>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "36vw",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textAlign: "left",
+          }}
+        >
+          {userName || "Unknown"}
+        </div>
+      </Tooltip>
+     </InlineStyleFlexbox>
+   )
+}; 

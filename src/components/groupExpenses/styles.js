@@ -17,16 +17,45 @@ export const viewGroupStyles = makeStyles((theme) => ({
         margin: '3rem 0 1rem',
         flexWrap: 'wrap',
     },
-    groupSettingStyles: {
-        [theme.breakpoints.down('sm')]: {
-            width: '100%',
-            minWidth: '90vw',
-        },
-        width: '400px',
-    },
     topHeaderStyles: {
         [theme.breakpoints.down('sm')]: {
             width: '87%',
         }
     }
 }));
+
+
+export const AddEditExpensesStyles = makeStyles((theme) => ({
+    container: {
+        [theme.breakpoints.up("sm")]: {
+            width: "405px",
+        },
+        padding: "1rem",
+    },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    },
+    splitMoneyWith: {
+        height: "200px",
+        overflow: "scroll",
+        // width: "100%",
+        marginBottom: "1rem",
+        border: "1px solid gray",
+        padding: "1rem 1rem 0 1rem",
+    
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        borderRadius: "0.5rem",
+    },
+    splitWithBox: {
+        position: "absolute",
+        bottom: "0px",
+        borderTop: "1px solid black",
+        width: "95%",
+        background: "white",
+        padding: "0.3rem 0.5rem",
+        left: 0,
+    },
+}))

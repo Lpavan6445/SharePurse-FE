@@ -131,7 +131,7 @@ const SettleBalance = ({
                 <InlineStylecDiv fontWeight="700" fontSize="1rem">
                   {index + 1}. You owe{" "}
                   <span style={{ fontSize: "1rem" }}>
-                    {userMetaData.users?.[userID]?.first_name || userID}{" "}
+                    {userMetaData.users?.[userID]?.username || userID}{" "}
                   </span>
                   <span style={{ color: theme.moduleColurs.redcolor }}>
                     {balance}
