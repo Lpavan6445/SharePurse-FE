@@ -62,5 +62,5 @@ export function formatNumberWithCurrency(number = 0, currencySymbol = '₹') {
 }
 
 export const getBeImgaeFullUrl = (url) => {
-	return `${process.env.REACT_APP_API_PREFIX}/${url}`
+	return url;
 }
