@@ -44,7 +44,7 @@ import AppContextBase from "../../../Base/appContext";
 import { cloneDeep } from "lodash";
 import ConditionalRender from "components/globalComponents/conditionalRender";
 import arrowBlackColor from "assets/arrowBlackColor.svg";
-import { UserWithProfileImage } from "components/globalComponents/commonComponents";
+import { CategoryWithText, UserWithProfileImage } from "components/globalComponents/commonComponents";
 import { AddEditExpensesStyles } from "../styles";
 
 const SPLIT_WITH_KEY = "split_with";
@@ -214,6 +214,16 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
                 optionValueKey="id"
                 multiple={false}
                 defaultValue={[]}
+                renderOption={(props, option, z) => {
+                  return (
+                    <div style={{ padding: "0.2rem 1rem" }} {...props}>
+                      <CategoryWithText
+                        categoryId={option.id}
+                        categoryTitle={option.title}
+                      />
+                    </div>
+                  );
+                }}
               />
             </Grid>
             <Grid item xs={12}>
