@@ -369,11 +369,11 @@ const EditExpenses = ({ defaultValues, match, afterExpenseAdded }) => {
                         gap="1rem"
                         fontSize="1rem"
                       >
-                          <UserWithProfileImage
+                        <UserWithProfileImage
                           altImage={user.user?.first_name}
-                          profileImage={user?.profile_image}
+                          profileImage={user?.image}
                           email={user.user?.email}
-                          userName={user.user?.username}
+                          userName={user?.username}
                         />
                         <InlineStylecDiv width="40%">
                           <ReactHookFormInput
@@ -421,10 +421,10 @@ const EditExpenses = ({ defaultValues, match, afterExpenseAdded }) => {
                     </>
                   );
                 })}
-                <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
               </div>
             </InlineStylecDiv>
           </Grid>
+          <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
         </ConditionalRender>
 
         <Grid item xs={12}>

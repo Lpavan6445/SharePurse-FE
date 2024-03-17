@@ -77,7 +77,10 @@ const GroupTopCards = ({
             <InlineStylecDiv fontWeight="700" fontSize="1rem">
               {userMetaData.users?.[key]?.username || key} owes you{" "}
               <span style={{ color: theme.moduleColurs.greencolor }}>
-                {balance}
+                {userUtils(
+                    balance,
+                  "formateNumberWithCurrency"
+                )}
               </span>
             </InlineStylecDiv>
           );
@@ -99,7 +102,10 @@ const GroupTopCards = ({
             <InlineStylecDiv fontWeight="700" fontSize="1rem">
               You owe {userMetaData.users?.[key]?.username || key}{" "}
               <span style={{ color: theme.moduleColurs.redcolor }}>
-                {balance}
+                {userUtils(
+                    balance,
+                  "formateNumberWithCurrency"
+                )}
               </span>
             </InlineStylecDiv>
           );
@@ -123,7 +129,7 @@ const GroupTopCards = ({
           </InlineStylecDiv>
         </Box>
       </CustomCardComponent>
-      <LightTooltip title={getBackDetails()}>
+      <LightTooltip enterDelay={0} title={getBackDetails()} enterTouchDelay={0}>
         <CustomCardComponent className={classes.cardStyles} data-aos="flip-left">
           <Box className={classes.cardTextWrapper}>
             <InlineStylecDiv
@@ -153,7 +159,7 @@ const GroupTopCards = ({
           </Box>
         </CustomCardComponent>
       </LightTooltip>
-      <LightTooltip title={getOweDetails()}>
+      <LightTooltip  enterDelay={0} title={getOweDetails()} enterTouchDelay={0}>
         <CustomCardComponent className={classes.cardStyles} data-aos="flip-right">
           <Box className={classes.cardTextWrapper}>
             <InlineStylecDiv

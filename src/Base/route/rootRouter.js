@@ -6,7 +6,6 @@ import AppUrls from './appUrls';
 import SignUpPage from '../../components/signUp';
 import LogInPage from '../../components/logIn/LogInPage';
 import LoggedInLayout from '../../layout';
-import PrimarySearchAppBar from "../../components/Appbar/appbar";
 import LoaderComponent from "components/globalComponents/LoaderComponent";
 const RootRouter = () => {
     const { isLoggedIn, isLoading } = useContext(AppContextBase);
@@ -22,7 +21,7 @@ const RootRouter = () => {
         <Switch>
             <Route path={AppUrls.LOG_IN} component={LogInPage}/>
             <Route path={AppUrls.SIGN_UP} component={SignUpPage}/>
-            <Route path="*" component={SignUpPage} />
+            <Route path="*" component={LogInPage} />
         </Switch>
     )
 

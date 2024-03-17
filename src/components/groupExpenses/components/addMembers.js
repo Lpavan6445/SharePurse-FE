@@ -9,6 +9,7 @@ import { InlineStylecDiv } from '../../globalComponents/InlineStyledCommonCompon
 import ApiUrls from '../../../Base/api/apiUrls';
 import axiosInstance from '../../../Base/api/axios';
 import GroupContextBase from '../groupContext';
+import { UserWithProfileImage } from 'components/globalComponents/commonComponents';
 
 const ADD_MEMBERS = {
   name: 'Add Members',
@@ -60,6 +61,14 @@ const AddMembers = ({
     }
   }
 
+  const filterUsersByGroupMemebers = users.filter((user) => {
+    const userId = user.id;
+    if (!groupMembers.includes(userId.toString())) {
+      return true
+    }
+    return false
+  });
+  
   return (
     <InlineStylecDiv padding="1rem">
       <Grid container spacing={2}>
@@ -81,19 +90,28 @@ const AddMembers = ({
             rules={ADD_MEMBERS.validations}
             control={control}
             errors={errors}
-            options={users || []}
+            options={filterUsersByGroupMemebers || []}
             optionUiText="username"
             optionValueKey="id"
             multiple={true}
             defaultValue={[]}
+            renderOption={(props, option, z) => {
+                  return (
+                    <div style={{ padding: "0.2rem 1rem" }} {...props}>
+                      <UserWithProfileImage
+                        altImage={option.user.first_name}
+                        profileImage={option.profile_image}
+                        email={option.user.email}
+                        userName={option.user.username}
+                      />
+                    </div>
+                  );
+            }}
           />
         </Grid>
         <Grid item xs={12}>
           <ButtonComponent
             type="submit"
-            // className={classes.submit}
-            // isLoading={isLoading}
-            // onClick={handleSubmit}
             onClick={handleSubmit(addMembers)}
             fullWidth
             disabled={isLoading}

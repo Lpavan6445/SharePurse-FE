@@ -13,6 +13,14 @@ import {
   useTheme,
 } from "@material-ui/core";
 import travelIcon from "assets/travelIcon.svg";
+import shoppingIcon from "assets/shoppingIcon.svg";
+import movieIconColor from "assets/movieIconColor.svg";
+import medicalIcon from "assets/medical.svg";
+import electronicsIcons from "assets/electronicsIcons.svg";
+import invoice from "assets/invoice.svg";
+import foodIcon from "assets/foodIcon.svg";
+import servicesIcon from "assets/servicesIcon.svg";
+
 import moment from "moment";
 import AppContextBase from "Base/appContext";
 import GroupContextBase from "components/groupExpenses/groupContext";
@@ -31,8 +39,8 @@ const styles = makeStyles((theme) => ({
     },
   },
   avatar: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
+    width: '40px',
+    height: '40px',
   },
   chip: {
     marginRight: theme.spacing(1),
@@ -44,6 +52,18 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
   const theme = useTheme();
 
   const classes = styles();
+
+  const GET_EXPENSES_IMAGES = {
+    'tr': travelIcon,
+    'ee': electronicsIcons,
+    'md': medicalIcon,
+    'sp': shoppingIcon,
+    'sv': servicesIcon,
+    'ot': invoice,
+    'mv': movieIconColor,
+    'fd': foodIcon,
+  }
+
   return (
     <>
       {Object.entries(data).map(([monthKey, expenses]) => (
@@ -85,8 +105,9 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
                         </InlineStyleFlexbox>
                         <Avatar
                           alt={expense.category}
-                          src={travelIcon}
+                          src={GET_EXPENSES_IMAGES[expense.category] || GET_EXPENSES_IMAGES['OTHERS']}
                           className={classes.avatar}
+                          variant="square"
                         />
                         <InlineStyleFlexbox
                           flexDirection="column"
@@ -94,7 +115,7 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
                         >
                           <Typography variant="h6">{expense.title}</Typography>
                           <Typography variant="subtitle2">
-                            {paidBy} paid {userUtils(expense.total_amount)}
+                            Total {userUtils(expense.total_amount)}
                           </Typography>
                         </InlineStyleFlexbox>
                       </InlineStylecDiv>
@@ -119,7 +140,8 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
                                 <Typography 
                                   variant="subtitle2"
                                   style={{
-                                    color:theme.moduleColurs.greencolor
+                                    color:theme.moduleColurs.greencolor,
+                                    textAlign: 'end'
                                   }}
                                 >
                                   You lent
@@ -140,7 +162,8 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
                             <Typography 
                               variant="subtitle2"
                               style={{
-                                color: theme.moduleColurs.redcolor
+                                color: theme.moduleColurs.redcolor,
+                                textAlign: 'end'
                               }}
                             >
                               You borrowed

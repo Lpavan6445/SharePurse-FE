@@ -1,4 +1,4 @@
-import { isArray, isString } from 'lodash';
+import { isArray, isString, round } from 'lodash';
 
 export const formatedError = (
 	error,
@@ -64,3 +64,11 @@ export function formatNumberWithCurrency(number = 0, currencySymbol = '₹') {
 export const getBeImgaeFullUrl = (url) => {
 	return url;
 }
+
+export const roundOfNumberWithMinimumAndMaxPrecission = (
+	num = 0,
+	minPrecession,
+	MaxPrecession
+) => {
+	return Number(round(num, MaxPrecession).toFixed(minPrecession));
+};

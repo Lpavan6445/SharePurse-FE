@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { InlineStylecDiv } from "../../globalComponents/InlineStyledCommonComponents";
 import {
+  FormHelperText,
   Grid,
   Typography,
   makeStyles,
@@ -77,6 +78,14 @@ const styles = makeStyles((theme) => ({
     right: "32%",
     cursor: "pointer",
   },
+  errorTxt: {
+    position: 'absolute',
+    zIndex: '243 !important',
+    left: '20%',
+    top: '8px',
+    fontWeight: '800',
+    fontSize: '1.2rem'
+  }
 }));
 const CreateEditGroup = ({
   history,
@@ -174,7 +183,7 @@ const CreateEditGroup = ({
       : ""
     : getBeImgaeFullUrl(defaultValues[GROUP_IMAGE] || "");
 
-  return (
+    return (
     <InlineStylecDiv padding="1rem">
       <Grid container spacing={2}>
         <Grid itm xs={12}>
@@ -189,7 +198,10 @@ const CreateEditGroup = ({
                 position: "absolute",
                 cursor: "pointer",
               }}
-            />
+            />[]
+            <FormHelperText error={!!errors[GROUP_IMAGE]} className={classes.errorTxt}>
+              {errors[GROUP_IMAGE] ? errors[GROUP_IMAGE].message : ''}
+            </FormHelperText>
             <IconButton className={`${classes.avatarEditIcon} editIcon`}>
               <EditIcon />
             </IconButton>

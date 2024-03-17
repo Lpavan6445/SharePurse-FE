@@ -38,7 +38,7 @@ import {
 import axiosInstance from "../../../Base/api/axios";
 import ApiUrls from "../../../Base/api/apiUrls";
 import { toast } from "react-toastify";
-import { formatedError, getBeImgaeFullUrl } from "../../../global/utils";
+import { formatedError, getBeImgaeFullUrl, roundOfNumberWithMinimumAndMaxPrecission } from "../../../global/utils";
 import AppUrls from "../../../Base/route/appUrls";
 import AppContextBase from "../../../Base/appContext";
 import { cloneDeep } from "lodash";
@@ -165,7 +165,7 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
   const generateUniqKey = (user) => {
     return `${user.id}_${user.username}_${SPLIT_WITH_KEY}`;
   };
-  console.log(getValues(), errors);
+
   return (
     <>
       <Container component="main" maxWidth="sm" className={classes.container}>
@@ -323,9 +323,15 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
                     const numberOfUsers = Object.values(
                       clonedGroupMembersData || {}
                     ).length;
-                    const splitEqually = totalAmount / numberOfUsers;
-                    Object.values(clonedGroupMembersData || {})?.map((user) => {
+                    const splitEqually = roundOfNumberWithMinimumAndMaxPrecission(totalAmount / numberOfUsers, 2, 2);
+                    const roudnOfValue = totalAmount - (splitEqually * numberOfUsers);
+
+                    Object.values(clonedGroupMembersData || {})?.map((user, idx) => {
                       const uniqKey = generateUniqKey(user);
+                      if (idx === numberOfUsers) {
+                        setValue(uniqKey, (splitEqually + roudnOfValue));
+                        return
+                      }
                       setValue(uniqKey, splitEqually);
                     });
                   }
@@ -398,10 +404,10 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
                       </>
                     );
                   })}
-                  <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
                 </div>
               </InlineStylecDiv>
             </Grid>
+            <div className={classes.splitWithBox}>{getBalancesTxt()}</div>
           </ConditionalRender>
 
           <Grid item xs={12}>

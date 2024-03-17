@@ -34,6 +34,7 @@ import AppUrls from "../../../Base/route/appUrls";
 import AppContextBase from "../../../Base/appContext";
 import EditExpenses from "./editExpenses";
 import ConditionalRender from "../../globalComponents/conditionalRender";
+import { UserWithProfileImage } from "components/globalComponents/commonComponents";
 
 const styles = makeStyles((theme) => ({
   container: {
@@ -122,6 +123,8 @@ const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
     formateExpenseDataToViewEdit(data);
   }, []);
 
+
+  const payedUserData = defaultEditValues[PAID_BY_ADD_EXPENSES_DK] || {};
   return (
     <>
       <Container component="main" maxWidth="sm" className={classes.container}>
@@ -142,28 +145,52 @@ const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
                 {defaultEditValues[TITLE_ADD_EXPENSES_DK]}
               </Typography>
               <hr />
-              <Typography variant="h5">
-                {defaultEditValues[PAID_BY_ADD_EXPENSES_DK]?.first_name} paid{" "}
-                {userUtils(
-                  defaultEditValues[TOTAL_AMOUNT_ADD_EXPENSES_DK],
-                  "formateNumberWithCurrency"
-                )}
-              </Typography>
+              <InlineStyleFlexbox
+                justifyContent="flex-start"
+                gap="0.5rem"
+                fontSize="1.5rem"
+                fontWeight="400"
+              >
+                <UserWithProfileImage
+                  altImage={payedUserData?.user?.first_name}
+                  profileImage={payedUserData?.profile_image}
+                  email={payedUserData?.user?.email}
+                  userName={payedUserData?.user?.username}
+                /> 
+                <Typography variant="h5">
+                  paid{" "}
+                  {userUtils(
+                    defaultEditValues[TOTAL_AMOUNT_ADD_EXPENSES_DK],
+                    "formateNumberWithCurrency"
+                  )}
+                </Typography>
+              </InlineStyleFlexbox>
               <hr />
               <Typography variant="h7">Split between:</Typography>
-              <Typography>
+              <InlineStyleFlexbox flexDirection="column" alignItems="unset" gap="0.7rem" marginTop="0.5rem">
                 {defaultEditValues.participants?.map((partipant, idx) => {
                   return (
-                    <Typography>
-                      {idx + 1}. {partipant.username} owes{" "}
-                      {userUtils(
-                        partipant.amount_paid,
-                        "formateNumberWithCurrency"
-                      )}
-                    </Typography>
+                    <InlineStyleFlexbox
+                     justifyContent="space-between"
+                      gap="1rem"
+                      fontSize="1rem"
+                    >
+                        <UserWithProfileImage
+                          altImage={partipant.user?.first_name}
+                          profileImage={partipant?.image}
+                          email={partipant.user?.email}
+                          userName={partipant?.username}
+                        />
+                        <div>
+                          {userUtils(
+                            partipant.amount_paid,
+                            "formateNumberWithCurrency"
+                          )}
+                        </div>
+                    </InlineStyleFlexbox>
                   );
                 })}
-              </Typography>
+              </InlineStyleFlexbox>
             </Grid>
             <Grid item xs={12}>
               <ButtonComponent onClick={() => setEditMode(true)} fullWidth>

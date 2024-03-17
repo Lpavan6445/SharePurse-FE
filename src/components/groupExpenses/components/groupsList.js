@@ -106,7 +106,7 @@ const GroupsList = ({ history, match }) => {
             alt={groupDt.group_name}
             src={getBeImgaeFullUrl(groupDt.group_image)}
           />
-          <InlineStylecDiv>6 Members</InlineStylecDiv>
+          <InlineStylecDiv>{groupDt.members.length} Members</InlineStylecDiv>
         </Box>
       </>
     );
