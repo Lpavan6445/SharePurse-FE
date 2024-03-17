@@ -4,6 +4,7 @@ import AppContextBase from "Base/appContext";
 import { ImgInlineStyle, InlineStyleFlexbox, InlineStylecDiv } from "components/globalComponents/InlineStyledCommonComponents";
 import { CustomCardComponent, LightTooltip } from "components/globalComponents/commonComponents";
 import linesIcons from "assets/linesIcons.svg";
+import { numFormatterForMoreThan10K } from "global/utils";
 
 export const styles = makeStyles((theme) => ({
   cardsWrapper: {
@@ -119,10 +120,7 @@ const GroupTopCards = ({
       <CustomCardComponent className={classes.cardStyles} data-aos="flip-left">
         <Box className={classes.cardTextWrapper}>
           <InlineStylecDiv fontWeight="bold" fontSize="2.5rem">
-            {userUtils(
-              groupBalanceData.total_spends,
-              "formateNumberWithCurrency"
-            )}
+            {`${userUtils('', 'getCurrencySymbol')} ${numFormatterForMoreThan10K(groupBalanceData.total_spends)}`}
           </InlineStylecDiv>
           <InlineStylecDiv fontSize="1.2rem" color="gray">
             Total Spends
@@ -137,10 +135,7 @@ const GroupTopCards = ({
               fontSize="2.5rem"
               color={theme.moduleColurs.greencolor}
             >
-              {userUtils(
-                groupBalanceData.total_owed,
-                "formateNumberWithCurrency"
-              )}
+              {`${userUtils('', 'getCurrencySymbol')} ${numFormatterForMoreThan10K(groupBalanceData.total_owed)}`}
             </InlineStylecDiv>
             <InlineStylecDiv fontSize="1.2rem" color="gray">
               You get back
@@ -167,10 +162,7 @@ const GroupTopCards = ({
               fontSize="2.5rem"
               color={theme.moduleColurs.redcolor}
             >
-              {userUtils(
-                -(groupBalanceData.total_borrowed || -0),
-                "formateNumberWithCurrency"
-              )}
+              {`${userUtils('', 'getCurrencySymbol')} ${numFormatterForMoreThan10K(-(groupBalanceData.total_borrowed || -0))}`}
             </InlineStylecDiv>
             <InlineStylecDiv fontSize="1.2rem" color="gray">
               You Owe
