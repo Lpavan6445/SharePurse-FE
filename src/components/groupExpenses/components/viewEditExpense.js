@@ -108,14 +108,13 @@ const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
       participants: [],
     };
     data.participants.forEach((data) => {
-      const name = `${data.userId}_${data.first_name}_${SPLIT_WITH_KEY}`;
+      const name = `${data.userId}_${data.username}_${SPLIT_WITH_KEY}`;
       defaultValues.participants.push({
         ...data,
         name: name,
       });
       defaultValues[name] = data.amount_paid;
     });
-    // const ex = `${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`;
     setDefaultEditValues(defaultValues);
   };
 
@@ -156,7 +155,7 @@ const ViewEditExpenses = ({ history, match, data, afterExpenseAdded }) => {
                 {defaultEditValues.participants?.map((partipant, idx) => {
                   return (
                     <Typography>
-                      {idx + 1}. {partipant.first_name} owes{" "}
+                      {idx + 1}. {partipant.username} owes{" "}
                       {userUtils(
                         partipant.amount_paid,
                         "formateNumberWithCurrency"
