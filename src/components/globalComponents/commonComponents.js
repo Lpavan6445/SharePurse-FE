@@ -1,6 +1,7 @@
 import { Avatar, Box, Tooltip, withStyles } from "@material-ui/core";
 import { InlineStyleFlexbox } from "./InlineStyledCommonComponents";
 import { getBeImgaeFullUrl } from "global/utils";
+import GroupExpensesService from "components/groupExpenses/services/groupExpensesService";
 
 export const PageHeader = withStyles((theme) => ({
    root: {
@@ -74,6 +75,37 @@ export const UserWithProfileImage = ({
           {userName || "Unknown"}
         </div>
       </Tooltip>
+     </InlineStyleFlexbox>
+   )
+}; 
+
+
+
+export const CategoryWithText = ({
+   categoryId = '',
+   categoryTitle = ''
+}) => {
+   return (
+      <InlineStyleFlexbox
+         justifyContent="flex-start"
+         gap="1rem"
+     >
+      <Avatar
+        alt={''}
+        src={GroupExpensesService.getExpensCategoryIcons(categoryId)}
+      />
+      <div
+         style={{
+         width: "100%",
+         maxWidth: "36vw",
+         textOverflow: "ellipsis",
+         whiteSpace: "nowrap",
+         overflow: "hidden",
+         textAlign: "left",
+         }}
+      >
+         {categoryTitle || "Unknown"}
+      </div>
      </InlineStyleFlexbox>
    )
 }; 

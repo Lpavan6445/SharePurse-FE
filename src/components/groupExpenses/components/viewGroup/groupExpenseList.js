@@ -12,19 +12,12 @@ import {
   makeStyles,
   useTheme,
 } from "@material-ui/core";
-import travelIcon from "assets/travelIcon.svg";
-import shoppingIcon from "assets/shoppingIcon.svg";
-import movieIconColor from "assets/movieIconColor.svg";
-import medicalIcon from "assets/medical.svg";
-import electronicsIcons from "assets/electronicsIcons.svg";
-import invoice from "assets/invoice.svg";
-import foodIcon from "assets/foodIcon.svg";
-import servicesIcon from "assets/servicesIcon.svg";
 
 import moment from "moment";
 import AppContextBase from "Base/appContext";
 import GroupContextBase from "components/groupExpenses/groupContext";
 import ConditionalRender from "components/globalComponents/conditionalRender";
+import GroupExpensesService from "components/groupExpenses/services/groupExpensesService";
 
 const styles = makeStyles((theme) => ({
   card: {
@@ -52,17 +45,6 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
   const theme = useTheme();
 
   const classes = styles();
-
-  const GET_EXPENSES_IMAGES = {
-    'tr': travelIcon,
-    'ee': electronicsIcons,
-    'md': medicalIcon,
-    'sp': shoppingIcon,
-    'sv': servicesIcon,
-    'ot': invoice,
-    'mv': movieIconColor,
-    'fd': foodIcon,
-  }
 
   return (
     <>
@@ -105,7 +87,7 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
                         </InlineStyleFlexbox>
                         <Avatar
                           alt={expense.category}
-                          src={GET_EXPENSES_IMAGES[expense.category] || GET_EXPENSES_IMAGES['OTHERS']}
+                          src={GroupExpensesService.getExpensCategoryIcons(expense.category)}
                           className={classes.avatar}
                           variant="square"
                         />
