@@ -139,23 +139,11 @@ const FixedSidebar = ({ history, children }) => {
 
   const MENU_BAR_ENUM = [
     {
-        title: 'Dashboard',
-        icon: dashboardIcon,
-        altIconTxt: 'dashboard',
-        path: AppUrls.HOME_PAGE,
-    },
-    {
         title: 'Groups',
         icon: groupsIcon,
         altIconTxt: 'groupsIcon',
         path: AppUrls.GROUPS_LIST,
     },
-    {
-        title: 'My Expense',
-        icon: personalExpense,
-        altIconTxt: 'groupsIcon',
-        path: AppUrls.PERSONAL_EXPENSE,
-    }
   ]
 
   const drawer = (afterOnClick = ()=>{}) => (

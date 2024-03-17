@@ -163,7 +163,7 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
   };
 
   const generateUniqKey = (user) => {
-    return `${user.id}_${user.first_name}_${SPLIT_WITH_KEY}`;
+    return `${user.id}_${user.username}_${SPLIT_WITH_KEY}`;
   };
   console.log(getValues(), errors);
   return (
@@ -237,7 +237,7 @@ const AddExpenses = ({ history, match, afterExpenseAdded }) => {
                 options={
                   Object.values(groupMetaData?.group_members || {}) || []
                 }
-                optionUiText="first_name"
+                optionUiText="username"
                 optionValueKey="id"
                 multiple={false}
                 defaultValue={[]}

@@ -53,7 +53,7 @@ const GroupExpenseList = ({ data = {}, viewExpense = {} }) => {
               .format("MMM DD")
               .split(" ");
             const paidBy =
-              groupMetaData?.group_members[expense.paid_by]?.first_name || "";
+              groupMetaData?.group_members[expense.paid_by]?.username || "";
             return (
               <Grid
                 item
