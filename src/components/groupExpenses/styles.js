@@ -37,7 +37,6 @@ export const AddEditExpensesStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
     },
     splitMoneyWith: {
-        height: "200px",
         overflow: "scroll",
         // width: "100%",
         marginBottom: "1rem",
@@ -50,9 +49,7 @@ export const AddEditExpensesStyles = makeStyles((theme) => ({
         borderRadius: "0.5rem",
     },
     splitWithBox: {
-        position: "absolute",
-        bottom: "0px",
-        borderTop: "1px solid black",
+        textAlign: "end",
         width: "95%",
         background: "white",
         padding: "0.3rem 0.5rem",

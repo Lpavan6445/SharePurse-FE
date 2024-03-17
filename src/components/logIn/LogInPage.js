@@ -44,8 +44,8 @@ function LogInPage({ history }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      [USER_NAME_KEY]: "",
-      [PASS_WORD_KEY]: "",
+      [USER_NAME_KEY]: "test_account",
+      [PASS_WORD_KEY]: "String@1",
     },
     resolver: yupResolver(LogInServices.getLogInValidations),
   });

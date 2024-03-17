@@ -34,7 +34,6 @@ const AppContext = ({ children }) => {
     try {
       activateLoader && setIsLoading(true);
       const logCheck = isLoggedIn();
-      console.log(logCheck, 'logCheck');
       if (logCheck) {
         const res = await axiosInstance.get(ApiUrls.GET_USER_META_DATA);
         const formatedUsersData = res.data.users.reduce((acc, curr) => {
